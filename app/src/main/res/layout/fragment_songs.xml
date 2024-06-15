@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_songs"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.songs.SongsFragment"
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
+
+    <Button
+        android:id="@+id/addSongBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Agregar Canción" />
+
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/songsSearchBar"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_input"
+            android:backgroundTint="#eaeaea"
+            android:drawableLeft="?android:attr/actionModeWebSearchDrawable"
+            android:ems="10"
+            android:hint="  Canción"
+            android:inputType="text"
+            android:textColor="#e7e7e7"
+            android:textColorHint="#d0d0d0"
+            android:layout_marginTop="20dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/songsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+</LinearLayout>

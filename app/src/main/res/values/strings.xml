@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Bellakkitys</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_artists">Artistas</string>
+    <string name="title_songs">Canciones</string>
+    <string name="title_concerts">Conciertos</string>
+    <string name="add">Agregar</string>
+    <string name="back">Retornar</string>
+
+</resources>

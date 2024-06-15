@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.movil.bellakkitys.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_artists"
+        android:name="com.movil.bellakkitys.ui.artists.ArtistsFragment"
+        android:label="@string/title_artists"
+        tools:layout="@layout/fragment_artists" />
+
+    <fragment
+        android:id="@+id/navigation_songs"
+        android:name="com.movil.bellakkitys.ui.songs.SongsFragment"
+        android:label="@string/title_songs"
+        tools:layout="@layout/fragment_songs" />
+
+    <fragment
+        android:id="@+id/navigation_concerts"
+        android:name="com.movil.bellakkitys.ui.concerts.ConcertsFragment"
+        android:label="@string/title_concerts"
+        tools:layout="@layout/fragment_concerts" />
+</navigation>

@@ -116,7 +116,7 @@ class ConcertsFragment : Fragment() {
         val notification = NotificationCompat.Builder(requireContext(), MyApp.CHANNEL_ID)
             .setContentTitle("Bellakittys")
             .setContentText("No olvides el concierto de ${artistName} el ${concertDate}")
-            .setSmallIcon(R.drawable.baseline_music_note_24)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
         notificationManager.notify(100, notification)

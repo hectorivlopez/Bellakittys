@@ -1,4 +1,4 @@
-package com.movil.bellakkitys.data.model
+package com.movil.bellakkitys.data.auth
 
 import android.content.Context
 import android.content.SharedPreferences

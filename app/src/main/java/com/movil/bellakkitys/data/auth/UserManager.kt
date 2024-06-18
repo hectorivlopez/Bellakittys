@@ -1,4 +1,4 @@
-package com.movil.bellakkitys.data.model
+package com.movil.bellakkitys.data.auth
 
 import android.content.Context
 
@@ -11,7 +11,7 @@ object UserManager {
     }
 
     fun setUser(user: User, context: Context) {
-        this.user = user
+        UserManager.user = user
         UserPreferences(context).saveUser(user)
     }
 

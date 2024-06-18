@@ -6,19 +6,19 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.movil.bellakkitys.data.firebase.FirebaseAuthManager
+import com.movil.bellakkitys.data.firebase.FirebaseManager
 import com.movil.bellakkitys.data.model.User
 import com.movil.bellakkitys.data.model.UserManager
 
 class SignUpActivity : AppCompatActivity() {
 
-    private lateinit var usernameTxt: EditText
+    private lateinit var nameTxt: EditText
     private lateinit var emailTxt: EditText
     private lateinit var passwordTxt: EditText
     private lateinit var confirmPasswordTxt: EditText
     private lateinit var registerBtn: Button
 
-    private lateinit var authManager: FirebaseAuthManager
+    private lateinit var firebaseManager: FirebaseManager
 
     private lateinit var user: User
 
@@ -26,19 +26,18 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        authManager = FirebaseAuthManager()
+        firebaseManager = FirebaseManager()
 
-        usernameTxt = findViewById(R.id.usernameTxt)
+        nameTxt = findViewById(R.id.nameTxt)
         emailTxt = findViewById(R.id.emailTxt)
         passwordTxt = findViewById(R.id.passwordTxt)
         confirmPasswordTxt = findViewById(R.id.confirmPasswordTxt)
         registerBtn = findViewById(R.id.registerBtn)
 
         registerBtn.setOnClickListener {
-            if (!emailTxt.text.isEmpty() && !passwordTxt.text.isEmpty()) {
+            if (!nameTxt.text.isEmpty() && !emailTxt.text.isEmpty() && !passwordTxt.text.isEmpty()) {
                 register()
-            }
-            else {
+            } else {
                 Toast.makeText(
                     this,
                     "Campos vacíos",
@@ -49,15 +48,15 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun register() {
+        val name = nameTxt.text.toString()
         val email = emailTxt.text.toString()
         val password = passwordTxt.text.toString()
 
-        authManager.signup(email, password) { result ->
+        firebaseManager.signup(name, email, password) { result ->
             if (result.isSuccess) {
                 val user = result.getOrNull()
-                user?.let {
-                    val userData = User(it.uid, "Gepeto", it.email)
-                    UserManager.setUser(userData, this)
+                if (user != null) {
+                    UserManager.setUser(user, this)
 
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
@@ -71,7 +70,7 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
 
-        /*if(usernameTxt.text.isBlank() || passwordTxt.text.isBlank() || emailTxt.text.isBlank() || confirmPasswordTxt.text.isBlank()){
+        /*if(nameTxt.text.isBlank() || passwordTxt.text.isBlank() || emailTxt.text.isBlank() || confirmPasswordTxt.text.isBlank()){
             Toast.makeText(this, "Llene todos los campos", Toast.LENGTH_SHORT).show()
         } else {
             if (!passwordTxt.text.toString().equals(confirmPasswordTxt.text.toString())) {
@@ -79,7 +78,7 @@ class SignUpActivity : AppCompatActivity() {
             } else {
                 val newUser = User (
                     1,
-                    usernameTxt.text.toString(),
+                    nameTxt.text.toString(),
                     emailTxt.text.toString(),
                     passwordTxt.text.toString(),
                     listOf(),

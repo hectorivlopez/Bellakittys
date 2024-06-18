@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import android.Manifest
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
+import com.movil.bellakkitys.data.firebase.FirebaseManager
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var imgBtnBack: ImageButton
@@ -88,8 +89,12 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun logout(){
+        val firebaseManager = FirebaseManager()
+        firebaseManager.logout()
+
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     private fun back(){

@@ -230,7 +230,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
 
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
 
-                Log.d("Progress miniplayer", "Si")
+                //Log.d("Progress miniplayer", "Si")
                 if (fromUser) {
                     mediaPlayer!!.pause()
                     mediaPlayer!!.seekTo(progress)
@@ -247,7 +247,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
                     val currentProgress = mediaPlayer!!.currentPosition
                     miniplayerSongBar.progress = currentProgress
 
-                    Log.d("Progressr", currentProgress.toString())
+                    //Log.d("Progressr", currentProgress.toString())
 
 
                     handler.postDelayed(this, 1000) // Actualiza cada segundo (1000 milisegundos)
@@ -263,7 +263,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
         override fun run() {
             if (mediaPlayer != null ) {
 
-                Log.d("Halayer", "Siuo")
+                //Log.d("Halayer", "Siuo")
                 miniplayerSongBar.progress = mediaPlayer!!.currentPosition
                 handler.postDelayed(this, 1000)
             }

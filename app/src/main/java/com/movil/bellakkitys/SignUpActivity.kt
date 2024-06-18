@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.movil.bellakkitys.data.firebase.FirebaseAuthManager
 import com.movil.bellakkitys.data.model.User
+import com.movil.bellakkitys.data.model.UserManager
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -16,11 +18,15 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var confirmPasswordTxt: EditText
     private lateinit var registerBtn: Button
 
+    private lateinit var authManager: FirebaseAuthManager
+
     private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+
+        authManager = FirebaseAuthManager()
 
         usernameTxt = findViewById(R.id.usernameTxt)
         emailTxt = findViewById(R.id.emailTxt)
@@ -29,12 +35,43 @@ class SignUpActivity : AppCompatActivity() {
         registerBtn = findViewById(R.id.registerBtn)
 
         registerBtn.setOnClickListener {
-            register()
+            if (!emailTxt.text.isEmpty() && !passwordTxt.text.isEmpty()) {
+                register()
+            }
+            else {
+                Toast.makeText(
+                    this,
+                    "Campos vacíos",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
     private fun register() {
-        if(usernameTxt.text.isBlank() || passwordTxt.text.isBlank() || emailTxt.text.isBlank() || confirmPasswordTxt.text.isBlank()){
+        val email = emailTxt.text.toString()
+        val password = passwordTxt.text.toString()
+
+        authManager.signup(email, password) { result ->
+            if (result.isSuccess) {
+                val user = result.getOrNull()
+                user?.let {
+                    val userData = User(it.uid, "Gepeto", it.email)
+                    UserManager.setUser(userData, this)
+
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
+            } else {
+                Toast.makeText(
+                    this,
+                    "Signup failed: ${result.exceptionOrNull()?.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        /*if(usernameTxt.text.isBlank() || passwordTxt.text.isBlank() || emailTxt.text.isBlank() || confirmPasswordTxt.text.isBlank()){
             Toast.makeText(this, "Llene todos los campos", Toast.LENGTH_SHORT).show()
         } else {
             if (!passwordTxt.text.toString().equals(confirmPasswordTxt.text.toString())) {
@@ -55,6 +92,6 @@ class SignUpActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
-        }
+        }*/
     }
 }

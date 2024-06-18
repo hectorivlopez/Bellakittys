@@ -5,7 +5,7 @@ import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.data.model.Song
 
 class Admin(
-    id: Int,
+    id: String,
     username: String,
     email: String,
     password: String,
@@ -17,4 +17,4 @@ class Admin(
     var adminLastLogin: Long,
     var adminTasksCompleted: Int,
     var adminDepartment: String
-) : User(id, username, email, password, emptyList(), emptyList(), "Admin")
+) : User(id, username, email)

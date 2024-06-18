@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
         // ------------------------------ Get extras------------------------------
         var extras = intent.extras
 
-        rol = extras?.getString("rol").toString()
+
         if (rol != null) {
             artistsViewModel.rol = rol
             songsViewModel.rol = rol

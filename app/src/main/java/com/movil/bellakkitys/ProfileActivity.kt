@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import android.Manifest
+import android.graphics.Bitmap
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -44,44 +45,67 @@ class ProfileActivity : AppCompatActivity() {
                 if (ContextCompat.checkSelfPermission(
                         this,
                         Manifest.permission.READ_MEDIA_IMAGES
+                    ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.CAMERA
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     ActivityCompat.requestPermissions(
                         this,
-                        arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                        arrayOf(Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.CAMERA),
                         REQUEST_CODE_PERMISSIONS
                     )
                 } else {
-                    openGalleryForImage()
+                    showImagePickerOptions()
                 }
             } else {
                 if (ContextCompat.checkSelfPermission(
                         this,
                         Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.CAMERA
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     ActivityCompat.requestPermissions(
                         this,
-                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
                         REQUEST_CODE_PERMISSIONS
                     )
                 } else {
-                    openGalleryForImage()
+                    showImagePickerOptions()
                 }
             }
         }
     }
 
-    private fun openGalleryForImage() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE)
+    private fun showImagePickerOptions() {
+        val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        pickIntent.type = "image/*"
+
+        val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        val chooserIntent = Intent.createChooser(pickIntent, "Select or take a new Picture")
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(takePhotoIntent))
+
+        startActivityForResult(chooserIntent, REQUEST_CODE_IMAGE_PICKER)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == Activity.RESULT_OK) {
-            val selectedImageUri: Uri? = data?.data
-            profileImg.setImageURI(selectedImageUri)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_CODE_IMAGE_PICKER -> {
+                    val isCamera = data == null || data.data == null
+                    if (isCamera) {
+                        val photo: Bitmap = data?.extras?.get("data") as Bitmap
+                        profileImg.setImageBitmap(photo)
+                    } else {
+                        val selectedImageUri: Uri? = data?.data
+                        profileImg.setImageURI(selectedImageUri)
+                    }
+                }
+            }
         }
     }
 
@@ -92,17 +116,17 @@ class ProfileActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openGalleryForImage()
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                showImagePickerOptions()
             } else {
-                println("Permiso denegado")
+                println("Permisos denegados")
             }
         }
     }
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 101
-        private const val REQUEST_CODE_SELECT_IMAGE = 100
+        private const val REQUEST_CODE_IMAGE_PICKER = 102
     }
 
     private fun logout(){

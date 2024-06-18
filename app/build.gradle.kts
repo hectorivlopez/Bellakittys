@@ -58,6 +58,8 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     // Firebase auth
     implementation("com.google.firebase:firebase-auth")
+    // Firestore
+    implementation("com.google.firebase:firebase-firestore")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

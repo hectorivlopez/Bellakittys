@@ -3,16 +3,12 @@ package com.movil.bellakkitys
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ListView
 import android.widget.Spinner
 import android.widget.Toast
-import com.movil.bellakkitys.ui.artists.Artist
-import com.movil.bellakkitys.ui.songs.Song
-import java.sql.Time
+import com.movil.bellakkitys.data.model.Song
 
 class SongFormActivity : AppCompatActivity() {
     private val sharedPreferencesManager by lazy { SharedPreferencesManager(this) }

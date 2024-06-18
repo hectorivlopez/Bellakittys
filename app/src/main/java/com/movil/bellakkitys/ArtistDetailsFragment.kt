@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.databinding.FragmentArtistDetailsBinding
 import com.movil.bellakkitys.ui.artists.ArtistsViewModel
-import com.movil.bellakkitys.ui.songs.Song
+import com.movil.bellakkitys.data.model.Song
 import com.movil.bellakkitys.ui.songs.SongsViewModel
 
 class ArtistDetailsFragment : Fragment() {

@@ -1,7 +1,6 @@
-package com.movil.bellakkitys.ui.artists
+package com.movil.bellakkitys.data.model
 
-import com.movil.bellakkitys.ui.concerts.Concert
-import com.movil.bellakkitys.ui.songs.Song
+import com.movil.bellakkitys.data.model.Song
 
 // Nombre del archivo: Artist.kt
 

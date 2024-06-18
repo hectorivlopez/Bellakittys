@@ -1,6 +1,5 @@
 package com.movil.bellakkitys.ui.artists
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,23 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.ArtistAdapter
 import com.movil.bellakkitys.ArtistDetailsFragment
-import com.movil.bellakkitys.ArtistFormActivity
-import com.movil.bellakkitys.LastItemMarginDecoration
 import com.movil.bellakkitys.MainActivity
-import com.movil.bellakkitys.R
-import com.movil.bellakkitys.SongAdapter
+import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.databinding.FragmentArtistsBinding
-import com.movil.bellakkitys.ui.songs.Song
 
 class ArtistsFragment : Fragment() {
     private var _binding: FragmentArtistsBinding? = null

@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.movil.bellakkitys.ui.artists.Artist
-import com.movil.bellakkitys.ui.songs.Song
+import com.movil.bellakkitys.data.model.Artist
+import com.movil.bellakkitys.data.model.Song
 
 class SharedPreferencesManager(private val context: Context) {
 

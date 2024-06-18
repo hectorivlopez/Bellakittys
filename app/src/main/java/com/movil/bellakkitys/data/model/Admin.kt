@@ -1,8 +1,8 @@
-package com.movil.bellakkitys
+package com.movil.bellakkitys.data.model
 
-import com.movil.bellakkitys.ui.artists.Artist
-import com.movil.bellakkitys.ui.songs.Song
-import java.time.LocalDateTime
+import com.movil.bellakkitys.data.model.User
+import com.movil.bellakkitys.data.model.Artist
+import com.movil.bellakkitys.data.model.Song
 
 class Admin(
     id: Int,

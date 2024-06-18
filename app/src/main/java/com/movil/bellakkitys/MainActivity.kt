@@ -1,8 +1,6 @@
 package com.movil.bellakkitys
 
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -23,10 +21,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.movil.bellakkitys.databinding.ActivityMainBinding
-import com.movil.bellakkitys.ui.artists.Artist
+import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.ui.artists.ArtistsViewModel
 import com.movil.bellakkitys.ui.concerts.ConcertsViewModel
-import com.movil.bellakkitys.ui.songs.Song
+import com.movil.bellakkitys.data.model.Song
 import com.movil.bellakkitys.ui.songs.SongsViewModel
 
 class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {

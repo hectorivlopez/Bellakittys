@@ -1,6 +1,5 @@
 package com.movil.bellakkitys.ui.songs
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,11 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.MainActivity
 import com.movil.bellakkitys.R
 import com.movil.bellakkitys.SongAdapter
-import com.movil.bellakkitys.SongFormActivity
+import com.movil.bellakkitys.data.model.Song
 import com.movil.bellakkitys.databinding.FragmentSongsBinding
 import com.movil.bellakkitys.ui.artists.ArtistsViewModel
 

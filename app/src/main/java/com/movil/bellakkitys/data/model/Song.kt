@@ -1,6 +1,4 @@
-package com.movil.bellakkitys.ui.songs
-
-import com.movil.bellakkitys.ui.artists.Artist
+package com.movil.bellakkitys.data.model
 
 // Nombre del archivo: Song.kt
 class Song(

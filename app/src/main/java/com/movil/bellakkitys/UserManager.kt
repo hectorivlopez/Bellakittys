@@ -1,5 +1,7 @@
 package com.movil.bellakkitys
 
+import com.movil.bellakkitys.data.model.User
+
 object UserManager {
     private var nextUserId = 0
     public val userList = mutableListOf<User>()

@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.movil.bellakkitys.ui.artists.Artist
-import com.movil.bellakkitys.ui.songs.Song
+import com.movil.bellakkitys.data.model.Artist
 
 class ArtistAdapter(private var artists: ArrayList<Artist>) : RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder>() {
 

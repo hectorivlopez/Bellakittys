@@ -1,7 +1,4 @@
-package com.movil.bellakkitys
-
-import com.movil.bellakkitys.ui.artists.Artist
-import com.movil.bellakkitys.ui.songs.Song
+package com.movil.bellakkitys.data.model
 
 open class User(
      var id: Int,

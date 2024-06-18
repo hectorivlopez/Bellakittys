@@ -3,11 +3,10 @@ package com.movil.bellakkitys
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.UserManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-import java.time.LocalDateTime
+import com.movil.bellakkitys.data.model.Admin
+import com.movil.bellakkitys.data.model.User
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var usernameTxt: EditText

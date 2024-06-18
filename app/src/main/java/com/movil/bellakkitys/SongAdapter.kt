@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.movil.bellakkitys.ui.songs.Song
+import com.movil.bellakkitys.data.model.Song
 
 class SongAdapter(private var songs: ArrayList<Song>) : RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
 

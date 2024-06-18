@@ -1,6 +1,5 @@
-package com.movil.bellakkitys.ui.concerts
+package com.movil.bellakkitys.data.model
 // Nombre del archivo: Event.kt
-import com.movil.bellakkitys.ui.artists.Artist
 import java.time.LocalDateTime
 
 class Concert(

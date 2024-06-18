@@ -10,19 +10,23 @@ class UserPreferences(context: Context) {
     fun saveUser(user: User) {
         preferences.edit().apply {
             putString("id", user.id)
+            putString("accountId", user.accountId)
             putString("name", user.name)
             putString("email", user.email)
+            putString("rol", user.rol)
             apply()
         }
     }
 
     fun getUser(): User? {
         val id = preferences.getString("id", null)
+        val accountId = preferences.getString("accountId", null)
         val name = preferences.getString("name", null)
         val email = preferences.getString("email", null)
+        val rol = preferences.getString("rol", null)
 
-        return if (id != null && email != null && name != null) {
-            User(id, name, email)
+        return if (id != null && accountId != null && email != null && name != null && rol != null) {
+            User(id, accountId, name, email, rol)
         } else {
             null
         }

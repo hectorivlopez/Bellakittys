@@ -7,9 +7,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.movil.bellakkitys.data.firebase.FirebaseManager
-import com.movil.bellakkitys.data.model.Admin
-import com.movil.bellakkitys.data.model.User
-import com.movil.bellakkitys.data.model.UserManager
+import com.movil.bellakkitys.data.auth.Admin
+import com.movil.bellakkitys.data.auth.UserManager
+import com.movil.bellakkitys.data.auth.Auth
+import com.movil.bellakkitys.data.auth.User
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailTxt: EditText
@@ -83,7 +84,7 @@ class LoginActivity : AppCompatActivity() {
              adminDepartment = "IT"
          )*/
         /*
-                com.movil.bellakkitys.data.model.UserManager.addUser(user)
+                com.movil.bellakkitys.data.auth.UserManager.addUser(user)
 
          */
 
@@ -94,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
         val email = emailTxt.text.toString()
         val password = passwordTxt.text.toString()
 
-        firebaseManager.login(email, password) { result ->
+        Auth.signIn(email, password) { result ->
             if (result.isSuccess) {
                 val user = result.getOrNull()
                 if (user != null) {
@@ -130,7 +131,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
-            val foundUser = com.movil.bellakkitys.data.model.UserManager.findUserByUsername(email)
+            val foundUser = com.movil.bellakkitys.data.auth.UserManager.findUserByUsername(email)
 
             if (foundUser != null && foundUser.password == password) {
                 val intent = Intent(this, MainActivity::class.java)

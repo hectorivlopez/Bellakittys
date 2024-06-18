@@ -3,12 +3,11 @@ package com.movil.bellakkitys.data.firebase
 import android.util.Log
 import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.firestore
-import com.movil.bellakkitys.data.model.User
+import com.movil.bellakkitys.data.auth.User
 import java.util.UUID
 
 class FirebaseManager {
@@ -18,7 +17,8 @@ class FirebaseManager {
 
     private val users = db.collection("users")
 
-    fun login(email: String, password: String, callback: (Result<User?>) -> Unit) {
+    // ------------------------------ Auth ------------------------------
+    fun signIn(email: String, password: String, callback: (Result<User?>) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -32,7 +32,7 @@ class FirebaseManager {
             }
     }
 
-    fun signup(name: String, email: String, password: String, callback: (Result<User?>) -> Unit) {
+    fun signUp(name: String, email: String, password: String, callback: (Result<User?>) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -115,4 +115,38 @@ class FirebaseManager {
             }
         }
     }
+
+    private fun query(collection: CollectionReference, field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
+        val tcs = TaskCompletionSource<List<DocumentSnapshot>?>()
+
+        collection.whereEqualTo(field, value)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    tcs.setResult(documents.documents)
+                } else {
+                    tcs.setResult(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                tcs.setException(exception)
+            }
+
+        tcs.task.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val result = task.result
+
+                callback(result)
+            } else {
+                callback(null)
+            }
+        }
+    }
+
+    fun getUsers(field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
+        query(users, field, value) {result -> callback(result)}
+    }
+
+
+
 }

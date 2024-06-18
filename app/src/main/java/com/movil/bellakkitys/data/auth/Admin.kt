@@ -1,6 +1,5 @@
-package com.movil.bellakkitys.data.model
+package com.movil.bellakkitys.data.auth
 
-import com.movil.bellakkitys.data.model.User
 import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.data.model.Song
 

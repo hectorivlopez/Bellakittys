@@ -15,5 +15,3 @@
 ## <a name="links">🔗 Assets</a>
 
 Assets used in the project can be found [here](https://drive.google.com/drive/folders/1hgyMHATLf3xJrX8R2CmkrHyzY21fMKSd?usp=sharing)
-
-Dario no es dedicado

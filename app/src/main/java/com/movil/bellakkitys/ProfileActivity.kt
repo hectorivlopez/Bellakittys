@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import android.Manifest
+import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.movil.bellakkitys.data.firebase.FirebaseManager
@@ -39,18 +40,34 @@ class ProfileActivity : AppCompatActivity() {
 
 
         profileImg.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    REQUEST_CODE_PERMISSIONS
-                )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.READ_MEDIA_IMAGES
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                        REQUEST_CODE_PERMISSIONS
+                    )
+                } else {
+                    openGalleryForImage()
+                }
             } else {
-                openGalleryForImage()
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        REQUEST_CODE_PERMISSIONS
+                    )
+                } else {
+                    openGalleryForImage()
+                }
             }
         }
     }

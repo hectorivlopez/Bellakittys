@@ -64,6 +64,16 @@ class FirebaseManager {
             }
     }
 
+    fun logout () {
+        auth.signOut()
+    }
+
+    fun isLoggedIn(): Boolean {
+        val currentUser = auth.currentUser
+        if(currentUser != null) return true
+        else return false
+    }
+
     fun getCurrentUser(callback: (User?) -> Unit) {
         val account = auth.currentUser
         if (account == null) {

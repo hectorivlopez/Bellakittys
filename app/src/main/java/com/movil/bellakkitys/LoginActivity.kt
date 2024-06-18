@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity() {
 
         // Crear un administrador de prueba
         admin = Admin(
-            id = 1,
+            id = "1",
             username = "admin",
             email = "admin@example.com",
             password = "12",
@@ -65,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
 
          */
 
-        println(com.movil.bellakkitys.UserManager.userList)
+
     }
 
     private fun login() {

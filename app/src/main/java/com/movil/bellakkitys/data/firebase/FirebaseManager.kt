@@ -16,6 +16,8 @@ class FirebaseManager {
     private val db = Firebase.firestore
 
     private val users = db.collection("users")
+    private val songs = db.collection("songs")
+    private val artists = db.collection("artists")
 
     // ------------------------------ Auth ------------------------------
     fun signIn(email: String, password: String, callback: (Result<User?>) -> Unit) {
@@ -116,7 +118,11 @@ class FirebaseManager {
         }
     }
 
-    private fun query(collection: CollectionReference, field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
+    // ------------------------------ Queries ------------------------------
+    // ---------- Create ----------
+    // ---------- Read ----------
+    // Find
+    private fun find(collection: CollectionReference, field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
         val tcs = TaskCompletionSource<List<DocumentSnapshot>?>()
 
         collection.whereEqualTo(field, value)
@@ -143,10 +149,92 @@ class FirebaseManager {
         }
     }
 
-    fun getUsers(field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
-        query(users, field, value) {result -> callback(result)}
+    fun findUsers(field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
+        find(users, field, value) {result -> callback(result)}
     }
 
+    fun findSongs(field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
+        find(songs, field, value) {result -> callback(result)}
+    }
 
+    fun findArtists(field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
+        find(artists, field, value) {result -> callback(result)}
+    }
 
+    // Find by id
+    private fun findById(collection: CollectionReference, id: String, callback: (DocumentSnapshot?) -> Unit) {
+        // Use TaskCompletionSource to wait for the query to complete
+        val tcs = TaskCompletionSource<DocumentSnapshot?>()
+
+        collection.document(id)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    tcs.setResult(document)
+                } else {
+                    tcs.setResult(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                tcs.setException(exception)
+            }
+
+        tcs.task.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val result = task.result
+
+                callback(result)
+            } else {
+                callback(null)
+            }
+        }
+    }
+
+    fun findSongById(id: String, callback: (DocumentSnapshot?) -> Unit) {
+        findById(songs, id) {result -> callback(result)}
+    }
+
+    fun findArtistById(id: String, callback: (DocumentSnapshot?) -> Unit) {
+        findById(artists, id) {result -> callback(result)}
+    }
+
+    // Get all
+    private fun all(collection: CollectionReference, callback: (List<DocumentSnapshot>?) -> Unit) {
+        // Use TaskCompletionSource to wait for the query to complete
+        val tcs = TaskCompletionSource<List<DocumentSnapshot>?>()
+
+        collection.get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    tcs.setResult(documents.documents)
+                } else {
+                    tcs.setResult(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                tcs.setException(exception)
+            }
+
+        tcs.task.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val result = task.result
+
+                callback(result)
+            } else {
+                callback(null)
+            }
+        }
+    }
+
+    fun allSongs(callback: (List<DocumentSnapshot>?) -> Unit) {
+        all(songs) {result -> callback(result)}
+    }
+
+    fun allArtists(callback: (List<DocumentSnapshot>?) -> Unit) {
+        all(artists) {result -> callback(result)}
+    }
+
+    // ---------- Update ----------
+
+    // ---------- Delete ----------
 }

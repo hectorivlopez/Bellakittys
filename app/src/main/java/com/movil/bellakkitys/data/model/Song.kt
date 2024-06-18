@@ -1,13 +1,99 @@
 package com.movil.bellakkitys.data.model
 
+import com.google.firebase.firestore.DocumentSnapshot
+import com.movil.bellakkitys.data.auth.User
+import com.movil.bellakkitys.data.firebase.FirebaseManager
+
 // Nombre del archivo: Song.kt
 class Song(
-    var id: Int,
+    var id: String,
     var title: String,
-    var artist: String,
-    var image: Int,
+    var artists: ArrayList<Artist>,
+    var imageUrl: String,
     var duration: String,
-    var file: Int
+    var fileUrl: String
 ) {
     var active: Boolean = false
+
+    companion object {
+        val firebaseManager = FirebaseManager()
+
+        // ------------------------------ Map to Object ------------------------------
+        private fun getSongs(result: List<DocumentSnapshot>): List<Song> {
+            val songs = result.map { song ->
+                getSong(song)
+            }
+
+            return songs
+        }
+
+        private fun getSong(result: DocumentSnapshot): Song {
+            val data = result.data
+
+            val artistsIds = data?.get("artists") as List<String>
+            val artists = ArrayList<Artist>()
+
+            for(artistId in artistsIds) {
+                Artist.findById(artistId) {artist ->
+                    if(artist != null) {
+                        artists.add(artist)
+                    }
+                }
+            }
+
+            val song = Song(
+                result.id,
+                data?.get("title").toString(),
+                artists,
+                data?.get("imageUrl").toString(),
+                data?.get("description").toString(),
+                data?.get("concert").toString(),
+            )
+
+            return song
+        }
+
+        // ------------------------------ Queries ------------------------------
+        // Read
+        fun findById(id: String, callback: (Song?) -> Unit) {
+            firebaseManager.findSongById(id) { result ->
+                if(result != null) {
+                    val song = getSong(result)
+                    callback(song)
+                }
+            }
+        }
+        fun find(key: String, value: String, callback: (Song) -> Unit) {
+            firebaseManager.findSongs(key, value) { result ->
+                if(result != null) {
+                    val songData = result[0]
+                    val song = getSong(songData)
+                    callback(song)
+                }
+            }
+        }
+        fun findAll(key: String, value: String, callback: (List<Song>) -> Unit) {
+            firebaseManager.findSongs(key, value) { result ->
+                if(result != null) {
+                    val songs = getSongs(result)
+                    callback(songs)
+                }
+            }
+        }
+
+        fun all(callback: (List<Song>) -> Unit) {
+            firebaseManager.allSongs() { result ->
+                if(result != null) {
+                    val songs = getSongs(result)
+                    callback(songs)
+                }
+            }
+        }
+    }
+
+    // Create
+
+    // Update
+
+    // Delete
 }

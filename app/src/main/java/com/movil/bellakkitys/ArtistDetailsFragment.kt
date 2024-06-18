@@ -64,7 +64,7 @@ class ArtistDetailsFragment : Fragment() {
         }
 
         // ------------------------------ Songs List------------------------------
-        val songs = songsViewModel.songList
+       /* val songs = songsViewModel.songList
         var filteredSongs = ArrayList<Song>()
         for(song in songs) {
             val artistsArray = song.artist.split(", ")
@@ -83,7 +83,7 @@ class ArtistDetailsFragment : Fragment() {
             override fun onItemClick(position: Int, song: Song, songTitle: TextView) {
                 (activity as? MainActivity)?.playSong(song, songTitle)
             }
-        })
+        })*/
 
         return root
     }

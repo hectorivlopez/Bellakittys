@@ -84,8 +84,8 @@ class SongAdapter(private var songs: ArrayList<Song>) : RecyclerView.Adapter<Son
 
         fun bind(song: Song) {
             songTitle.text = song.title
-            songArtist.text = song.artist
-            songThumbnail.setImageResource(song.image)
+            /*songArtist.text = song.artist
+            songThumbnail.setImageResource(song.image)*/
             songDuration.text = song.duration
             if (song.active) {
                 songTitle.setTextColor(ContextCompat.getColor(itemView.context, R.color.accentColor))

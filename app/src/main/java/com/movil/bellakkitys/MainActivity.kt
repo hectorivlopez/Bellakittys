@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
         sharedPreferencesManager.getArtistList().clear()
         sharedPreferencesManager.getSongList().clear()
 
-        val savedArtistList = ArrayList<Artist>()
+        /*val savedArtistList = ArrayList<Artist>()
         savedArtistList.add(Artist(0, "Bad Gyal", R.drawable.badgyal, "badgyal", "Descripción de Badgyal", ArrayList(), "15/09/2023"))
         savedArtistList.add(Artist(1, "Bellakath", R.drawable.bellakath, "bellakath", "Descripción de Bellakath", ArrayList(), "28/03/2024"))
         savedArtistList.add(Artist(2, "Cris Mj", R.drawable.crismj, "crismj", "Descripción de Cris Mj", ArrayList(), "10/11/2023"))
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
         savedArtistList.add(Artist(12, "Yeri Mua", R.drawable.yerimua, "yerimua", "Descripción de Yeri Mua", ArrayList(), "09/05/2024"))
         savedArtistList.add(Artist(13, "Ñengo Flow", R.drawable.nengoflow, "nengoflow", "Descripción de Ñengo Flow", ArrayList(), "18/11/2023"))
 
-        artistsViewModel.artistList = savedArtistList
+        artistsViewModel.artistList = savedArtistList*/
 
 
         /*val savedSongList = sharedPreferencesManager.getSongList()
@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
         } else {
             songsViewModel.songList = ArrayList<Song>()
         }*/
-        val savedSongList = ArrayList<Song>()
+        /*val savedSongList = ArrayList<Song>()
         savedSongList.add(Song(0, "Gatita", "Bellakath", R.drawable.gatita, "2:33", R.raw.gatita))
         savedSongList.add(Song(1, "Reggaeton Champagne", "Bellakath, Dani Flow", R.drawable.bellakath, "2:39", R.raw.reggaetonchampagne))
         savedSongList.add(Song(2, "Otro Show", "Uzielito Mix, El Bogueto, Dani Flow", R.drawable.otroshow, "2:40", R.raw.otro_show))
@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
         savedSongList.add(Song(51, "Yo Sé Que Tú Quieres", "Ñengo Flow, Sammy & Falsetto", R.drawable.yosequetuquieres, "3:28", R.raw.yo_se_que_tu_quieres))
         savedSongList.add(Song(52, "La Prision", "Ñengo Flow", R.drawable.laprision, "3:17", R.raw.la_prision))
 
-        songsViewModel.songList = savedSongList
+        songsViewModel.songList = savedSongList*/
 
 
 
@@ -206,18 +206,18 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
             miniplayerContainer.visibility = View.VISIBLE
         }
 
-        miniplayer.setOnClickListener{
+        /*miniplayer.setOnClickListener{
             val intent = Intent(this, PlayerActivity::class.java)
             intent.putExtra("songTitle", currentSong?.title)
             intent.putExtra("songArtist", currentSong?.artist)
             currentSong?.let { it1 -> intent.putExtra("songImage", it1.image) }
             intent.putExtra("progress", miniplayerSongBar.progress)
             startActivity(intent)
-        }
+        }*/
 
-        miniplayerPlayBtn.setOnClickListener{
+        /*miniplayerPlayBtn.setOnClickListener{
             playPauseSong()
-        }
+        }*/
 
         // ------------------------------ SongBar------------------------------
         miniplayerSongBar = findViewById(R.id.coco)
@@ -277,7 +277,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
 
     // ------------------------------ Functions------------------------------
     fun playSong(song: Song, songTitle: TextView) {
-        currentSong?.active = false
+        /*currentSong?.active = false
         song.active = true
         currentSongTitle?.setTextColor(ContextCompat.getColor(this, R.color.white))
         songTitle.setTextColor(ContextCompat.getColor(this, R.color.accentColor))
@@ -304,7 +304,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
             songActive = true
             miniplayerContainer.visibility = View.VISIBLE
         }
-
+*/
     }
 
     fun playPauseSong() {

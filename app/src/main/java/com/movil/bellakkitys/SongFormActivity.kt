@@ -40,7 +40,7 @@ class SongFormActivity : AppCompatActivity() {
         button9 = findViewById(R.id.button9)
         button10 = findViewById(R.id.button10)
 
-        button9.setOnClickListener {
+        /*button9.setOnClickListener {
             add()
         }
 
@@ -66,7 +66,7 @@ class SongFormActivity : AppCompatActivity() {
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, imageNames)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        fileSpn.adapter = adapter
+        fileSpn.adapter = adapter*/
     }
 
     fun back() {
@@ -76,7 +76,7 @@ class SongFormActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun add() {
+    /*fun add() {
         if (titleTxt.text.isBlank() || artistTxt.text.isBlank() || durationTxt.text.isBlank()) {
             Toast.makeText(this, "Llene todos los campos", Toast.LENGTH_SHORT).show()
         } else {
@@ -110,7 +110,7 @@ class SongFormActivity : AppCompatActivity() {
             finish()
             startActivity(intent)
         }
-        /*savedSongList.clear()
+        *//*savedSongList.clear()
         savedSongList.add(Song(0, "Gatita", "Bellakath", R.drawable.gatita, "2:33", R.raw.gatita))
         savedSongList.add(Song(1, "Reggaeton Champagne", "Bellakath, Dani Flow", R.drawable.bellakath, "2:39", R.raw.reggaetonchampagne))
         savedSongList.add(Song(2, "Otro Show", "Uzielito Mix, El Bogueto, Dani Flow", R.drawable.otroshow, "2:40", R.raw.conto))
@@ -164,7 +164,7 @@ class SongFormActivity : AppCompatActivity() {
         savedSongList.add(Song(50, "Cuando Me Dirá", "Ñengo Flow", R.drawable.cuandomedira, "2:29", R.raw.cuando_me_dira))
         savedSongList.add(Song(51, "Yo Sé Que Tú Quieres", "Ñengo Flow, Sammy & Falsetto", R.drawable.yosequetuquieres, "3:28", R.raw.yo_se_que_tu_quieres))
         savedSongList.add(Song(52, "La Prision", "Ñengo Flow", R.drawable.laprision, "3:17", R.raw.la_prision))
-        sharedPreferencesManager.saveSongList(savedSongList)*/
-    }
+        sharedPreferencesManager.saveSongList(savedSongList)*//*
+    }*/
 
 }

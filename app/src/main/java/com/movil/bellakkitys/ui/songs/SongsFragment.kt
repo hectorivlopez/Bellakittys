@@ -66,7 +66,7 @@ class SongsFragment : Fragment() {
 
 
 
-        songsSearchBar = root.findViewById(R.id.songsSearchBar)
+        /*songsSearchBar = root.findViewById(R.id.songsSearchBar)
         songsSearchBar.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {}
 
@@ -91,11 +91,11 @@ class SongsFragment : Fragment() {
 
                 return filteredList
             }
-        })
+        })*/
 
 
         // ------------------------------ Songs Adapter------------------------------
-        songsRecyclerView = binding.songsRecyclerView
+        /*songsRecyclerView = binding.songsRecyclerView
         songsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         songAdapter = SongAdapter(songs)
         songsRecyclerView.adapter = songAdapter
@@ -104,7 +104,7 @@ class SongsFragment : Fragment() {
             override fun onItemClick(position: Int, song: Song, songTitle: TextView) {
                 (activity as? MainActivity)?.playSong(song, songTitle)
             }
-        })
+        })*/
 
         return root
     }

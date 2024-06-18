@@ -91,7 +91,7 @@ class ArtistsFragment : Fragment() {
         artistAdapter = ArtistAdapter(artists)
         artistsRecyclerView.adapter = artistAdapter
 
-        artistAdapter.setOnItemClickListener(object : ArtistAdapter.OnItemClickListener {
+        /*artistAdapter.setOnItemClickListener(object : ArtistAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, artist: Artist) {
                 //(activity as? MainActivity)?.playSong(artist)
                 artistsViewModel.artistImage = artist.image
@@ -102,7 +102,7 @@ class ArtistsFragment : Fragment() {
                 val mainActivity = activity as MainActivity?
                 mainActivity?.replaceFragment(ArtistDetailsFragment())
             }
-        })
+        })*/
 
         return root
     }

@@ -66,9 +66,9 @@ class ArtistFormActivity : AppCompatActivity() {
         button = findViewById(R.id.button)
         button2 = findViewById(R.id.button2)
 
-        button.setOnClickListener {
+        /*button.setOnClickListener {
             add()
-        }
+        }*/
 
         button2.setOnClickListener {
             back()
@@ -82,7 +82,7 @@ class ArtistFormActivity : AppCompatActivity() {
         finish()
     }
 
-    fun add(){
+    /*fun add(){
         if (nameTxt.text.isBlank() || descriptionTxt.text.isBlank()){
             Toast.makeText(this, "Llene todos los campos", Toast.LENGTH_SHORT).show()
         } else {
@@ -109,7 +109,7 @@ class ArtistFormActivity : AppCompatActivity() {
             finish()
         }
 
-        /*savedArtistList.clear()
+        *//*savedArtistList.clear()
 
         savedArtistList.add(Artist(0, "Bad Gyal", R.drawable.badgyal, "badgyal", "Descripción de Badgyal", ArrayList(), "15/09/2023"))
         savedArtistList.add(Artist(1, "Bellakath", R.drawable.bellakath, "bellakath", "Descripción de Bellakath", ArrayList(), "28/03/2024"))
@@ -187,7 +187,7 @@ class ArtistFormActivity : AppCompatActivity() {
 
         sharedPreferencesManager.saveSongList(savedSongList)
         Toast.makeText(this, "Guardado", Toast.LENGTH_SHORT).show()
-*/
-    }
+*//*
+    }*/
 
 }

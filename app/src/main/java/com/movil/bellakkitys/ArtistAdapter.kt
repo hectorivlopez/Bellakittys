@@ -73,7 +73,7 @@ class ArtistAdapter(private var artists: ArrayList<Artist>) : RecyclerView.Adapt
 
         fun bind(artist: Artist) {
             artistName.text = artist.name
-            artistImage.setImageResource(artist.image)
+            /*artistImage.setImageResource(artist.image)*/
             // Load song thumbnail/image using a library like Picasso/Glide
             // Example: Glide.with(itemView.context).load(song.thumbnailUrl).into(artistImage)
         }

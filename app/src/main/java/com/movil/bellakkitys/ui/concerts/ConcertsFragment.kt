@@ -1,29 +1,32 @@
 package com.movil.bellakkitys.ui.concerts
 
+import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.ArtistAdapter
-import com.movil.bellakkitys.ArtistDetailsFragment
-import com.movil.bellakkitys.MainActivity
+import com.movil.bellakkitys.MyApp
 import com.movil.bellakkitys.R
-import com.movil.bellakkitys.SongAdapter
 import com.movil.bellakkitys.databinding.FragmentConcertsBinding
 import com.movil.bellakkitys.ui.artists.Artist
 import com.movil.bellakkitys.ui.artists.ArtistsViewModel
-import com.movil.bellakkitys.ui.songs.Song
-import com.movil.bellakkitys.ui.songs.SongsViewModel
 import java.util.Calendar
 
 class ConcertsFragment : Fragment() {
@@ -105,17 +108,24 @@ class ConcertsFragment : Fragment() {
 
                 calendarView.setDate(millis, true, true)
 
+                sendNotification(artist.name, artist.concert)
+
                 Toast.makeText(requireContext(), artist.concert, Toast.LENGTH_SHORT).show()
             }
         })
 
-
-
-
-
-
-
         return root
+    }
+
+    private fun sendNotification(artistName: String, concertDate: String){
+        val notificationManager = requireContext().getSystemService(NotificationManager::class.java)
+        val notification = NotificationCompat.Builder(requireContext(), MyApp.CHANNEL_ID)
+            .setContentTitle("Bellakittys")
+            .setContentText("No olvides el concierto de ${artistName} el ${concertDate}")
+            .setSmallIcon(R.drawable.baseline_music_note_24)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .build()
+        notificationManager.notify(100, notification)
     }
 
     override fun onDestroyView() {

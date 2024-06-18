@@ -120,11 +120,11 @@ class ArtistFormActivity : AppCompatActivity() {
         savedArtistList.add(Artist(5, "El Bogueto", R.drawable.bogueto, "bogueto", "Descripción de El Bogueto", ArrayList(), "22/10/2023"))
         savedArtistList.add(Artist(6, "Jere Klein", R.drawable.jereklein, "jereklein", "Descripción de Jere Klein", ArrayList(), "07/06/2024"))
         savedArtistList.add(Artist(7, "Jordan 23", R.drawable.jordan23, "jordan23", "Descripción de Jordan 23", ArrayList(), "30/12/2023"))
-        savedArtistList.add(Artist(8, "Jowell y Randy", R.drawable.jowellyrandy, "jowellyrandy", "Descripción de Jowell y Randy", ArrayList(), "12/08/2024"))
+        savedArtistList.add(Artist(8, "Jowell & Randy", R.drawable.jowellyrandy, "jowellyrandy", "Descripción de Jowell & Randy", ArrayList(), "12/08/2024"))
         savedArtistList.add(Artist(9, "Standly", R.drawable.standly, "standly", "Descripción de Standly", ArrayList(), "25/04/2024"))
         savedArtistList.add(Artist(10, "Tokischa", R.drawable.tokischa, "tokischa", "Descripción de Tokischa", ArrayList(), "03/10/2023"))
-        savedArtistList.add(Artist(11, "Uzielito mix", R.drawable.uzielitomix, "uzielitomix", "Descripción de Uzielito mix", ArrayList(), "14/02/2024"))
-        savedArtistList.add(Artist(12, "Yerimua", R.drawable.yerimua, "yerimua", "Descripción de Yerimua", ArrayList(), "09/05/2024"))
+        savedArtistList.add(Artist(11, "Uzielito Mix", R.drawable.uzielitomix, "uzielitomix", "Descripción de Uzielito Mix", ArrayList(), "14/02/2024"))
+        savedArtistList.add(Artist(12, "Yeri Mua", R.drawable.yerimua, "yerimua", "Descripción de Yeri Mua", ArrayList(), "09/05/2024"))
         savedArtistList.add(Artist(13, "Ñengo Flow", R.drawable.nengoflow, "nengoflow", "Descripción de Ñengo Flow", ArrayList(), "18/11/2023"))
 
 

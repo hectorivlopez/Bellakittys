@@ -67,7 +67,7 @@ class ArtistDetailsFragment : Fragment() {
         val songs = songsViewModel.songList
         var filteredSongs = ArrayList<Song>()
         for(song in songs) {
-            val artistsArray = song.artist.split(",")
+            val artistsArray = song.artist.split(", ")
             if(artistsArray.contains(artistsViewModel.artistName)) {
                 filteredSongs.add(song)
             }

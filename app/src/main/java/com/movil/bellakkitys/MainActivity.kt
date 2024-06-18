@@ -115,11 +115,11 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
         savedArtistList.add(Artist(5, "El Bogueto", R.drawable.bogueto, "bogueto", "Descripción de El Bogueto", ArrayList(), "22/10/2023"))
         savedArtistList.add(Artist(6, "Jere Klein", R.drawable.jereklein, "jereklein", "Descripción de Jere Klein", ArrayList(), "07/06/2024"))
         savedArtistList.add(Artist(7, "Jordan 23", R.drawable.jordan23, "jordan23", "Descripción de Jordan 23", ArrayList(), "30/12/2023"))
-        savedArtistList.add(Artist(8, "Jowell y Randy", R.drawable.jowellyrandy, "jowellyrandy", "Descripción de Jowell y Randy", ArrayList(), "12/08/2024"))
+        savedArtistList.add(Artist(8, "Jowell & Randy", R.drawable.jowellyrandy, "jowellyrandy", "Descripción de Jowell & Randy", ArrayList(), "12/08/2024"))
         savedArtistList.add(Artist(9, "Standly", R.drawable.standly, "standly", "Descripción de Standly", ArrayList(), "25/04/2024"))
         savedArtistList.add(Artist(10, "Tokischa", R.drawable.tokischa, "tokischa", "Descripción de Tokischa", ArrayList(), "03/10/2023"))
-        savedArtistList.add(Artist(11, "Uzielito mix", R.drawable.uzielitomix, "uzielitomix", "Descripción de Uzielito mix", ArrayList(), "14/02/2024"))
-        savedArtistList.add(Artist(12, "Yerimua", R.drawable.yerimua, "yerimua", "Descripción de Yerimua", ArrayList(), "09/05/2024"))
+        savedArtistList.add(Artist(11, "Uzielito Mix", R.drawable.uzielitomix, "uzielitomix", "Descripción de Uzielito Mix", ArrayList(), "14/02/2024"))
+        savedArtistList.add(Artist(12, "Yeri Mua", R.drawable.yerimua, "yerimua", "Descripción de Yeri Mua", ArrayList(), "09/05/2024"))
         savedArtistList.add(Artist(13, "Ñengo Flow", R.drawable.nengoflow, "nengoflow", "Descripción de Ñengo Flow", ArrayList(), "18/11/2023"))
 
         artistsViewModel.artistList = savedArtistList
@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
         val savedSongList = ArrayList<Song>()
         savedSongList.add(Song(0, "Gatita", "Bellakath", R.drawable.gatita, "2:33", R.raw.gatita))
         savedSongList.add(Song(1, "Reggaeton Champagne", "Bellakath, Dani Flow", R.drawable.bellakath, "2:39", R.raw.reggaetonchampagne))
-        savedSongList.add(Song(2, "Otro Show", "Uzielito Mix, El Bogueto, Dani Flow", R.drawable.otroshow, "2:40", R.raw.conto))
+        savedSongList.add(Song(2, "Otro Show", "Uzielito Mix, El Bogueto, Dani Flow", R.drawable.otroshow, "2:40", R.raw.otro_show))
         savedSongList.add(Song(3, "Martillazo", "Uzielito Mix, El Bogueto, Dani Flow", R.drawable.martillazo, "2:38", R.raw.martillazo))
         savedSongList.add(Song(4, "Que Rollito Primavera", "Dani Flow", R.drawable.querollitoprimavera, "3:12", R.raw.que_rollito_primavera))
         savedSongList.add(Song(5, "Las Que No Tienen Papá", "Dani Flow", R.drawable.lasquenotienenpapa, "3:18", R.raw.las_que_no_tienen_papa))

@@ -56,6 +56,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     // Firebase analytics
     implementation("com.google.firebase:firebase-analytics")
+    // Firebase auth
+    implementation("com.google.firebase:firebase-auth")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -139,6 +139,10 @@ class FirebaseManager {
     // ------------------------------ Queries ------------------------------
     // ---------- Create ----------
     fun createSong(song: Song) {
+        val fileName = UUID.randomUUID().toString()
+        uploadAudio(song.fileUrl, fileName) { audioUri ->
+
+        }
         uploadImage(song.imageUrl) { imageUri ->
             if (imageUri != null) {
                 val uniqueID = UUID.randomUUID().toString()
@@ -154,7 +158,7 @@ class FirebaseManager {
                     "artists" to artists,
                     "imageUrl" to song.imageUrl,
                     "duration" to song.duration,
-                    "fileUrl" to song.fileUrl,
+                    "fileUrl" to "songs/$fileName.mp3",
                 )
                 songs.document(uniqueID).set(data)
                     .addOnSuccessListener { documentReference ->
@@ -164,16 +168,7 @@ class FirebaseManager {
                         Log.w("Create Song", "Error adding document", e)
                     }
 
-                uploadAudio(song.fileUrl) { audioUri ->
-                    if (audioUri != null) {
-                            Log.d("Cosotat", audioUri)
-                        Song.find("title", song.title) {result ->
-                            song.id = result.id
-                            song.fileUrl = audioUri
-                            song.update()
-                        }
-                    }
-                }
+
             }
 
 
@@ -460,15 +455,14 @@ class FirebaseManager {
     }
 
 
-    fun uploadAudio(audioUri: String, callback: (String?) -> Unit) {
+    fun uploadAudio(audioUri: String, name: String, callback: (String?) -> Unit) {
         val fileUri = Uri.parse(audioUri)
 
-        val uniqueID = UUID.randomUUID().toString()
-        val fileRef = storageRef.child("songs/$uniqueID.mp3")
+        val fileRef = storageRef.child("songs/$name.mp3")
 
         fileRef.putFile(fileUri)
             .addOnSuccessListener {
-                callback("songs/$uniqueID.mp3")
+                callback("songs/$name.mp3")
             }
             .addOnFailureListener { exception ->
                 callback(null)

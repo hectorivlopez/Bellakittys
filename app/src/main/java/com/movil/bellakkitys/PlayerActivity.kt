@@ -85,7 +85,7 @@ class PlayerActivity : AppCompatActivity() {
         playerSongImage = findViewById(R.id.playerSongImage)
         if (songImage != null) {
             if (songImage.isNotEmpty()) {
-                Song.firebaseManager.loadImage(songImage, playerSongImage)
+                Song.firebaseManager.loadImage(songImage, playerSongImage){}
             }
         }
 

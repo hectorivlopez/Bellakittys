@@ -76,7 +76,7 @@ class ArtistAdapter(private var artists: List<Artist>) : RecyclerView.Adapter<Ar
 
         fun bind(artist: Artist) {
             artistName.text = artist.name
-            firebaseManager.loadImage(artist.imageUrl,artistImage)
+            firebaseManager.loadImage(artist.imageUrl,artistImage){}
             // Load song thumbnail/image using a library like Picasso/Glide
             // Example: Glide.with(itemView.context).load(song.thumbnailUrl).into(artistImage)
         }

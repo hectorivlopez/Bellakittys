@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -106,7 +107,7 @@ class ArtistsFragment : Fragment() {
                     artistsViewModel.artistImageUrl = artist.imageUrl
                     artistsViewModel.artistName = artist.name
                     artistsViewModel.artistDescription = artist.description
-
+                    Toast.makeText(requireContext(), artist.imageUrl.toString(), Toast.LENGTH_SHORT).show()
 
                     val mainActivity = activity as MainActivity?
                     mainActivity?.replaceFragment(ArtistDetailsFragment())

@@ -14,6 +14,7 @@ import com.google.firebase.storage.storage
 import com.movil.bellakkitys.data.auth.User
 import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.data.model.Song
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.util.UUID
 
@@ -392,12 +393,20 @@ class FirebaseManager {
             }
     }
 
-    fun loadImage(imagePath: String, imageView: ImageView) {
+    fun loadImage(imagePath: String, imageView: ImageView, callback: () -> Unit) {
         val imageRef = storageRef.child(imagePath)
 
         imageRef.downloadUrl.addOnSuccessListener { uri ->
             val imageUrl = uri.toString()
-            Picasso.get().load(imageUrl).into(imageView)
+            Picasso.get().load(imageUrl).into(imageView, object: Callback {
+                override fun onSuccess() {
+                    callback()
+                }
+
+                override fun onError(e: Exception?) {
+                    // Manejar el error de carga de la imagen si es necesario
+                }
+            })
         }.addOnFailureListener {
             // Handle any errors
         }

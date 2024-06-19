@@ -88,7 +88,7 @@ class SongAdapter(private var songs: ArrayList<Song>, private val rol: String) :
             songTitle.text = song.title
             songArtist.text = song.artists.toString()
             if (song.imageUrl.isNotEmpty()) {
-                Song.firebaseManager.loadImage(song.imageUrl, songThumbnail)
+                Song.firebaseManager.loadImage(song.imageUrl, songThumbnail){}
             }
             songDuration.text = song.duration
             if (song.active) {

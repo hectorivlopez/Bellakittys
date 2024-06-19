@@ -57,7 +57,7 @@ class ArtistDetailsFragment : Fragment() {
         artistDetailsNameLabel = binding.artistDetailsNameLabel
         artistDetailsDescriptionLabel = binding.artistDetailsDescriptionLabel
 
-        firebaseManager.loadImage(artistsViewModel.artistImageUrl,artistDetailsImage)
+        firebaseManager.loadImage(artistsViewModel.artistImageUrl, artistDetailsImage){}
         artistDetailsNameLabel.text = artistsViewModel.artistName
         artistDetailsDescriptionLabel.text = artistsViewModel.artistDescription
 

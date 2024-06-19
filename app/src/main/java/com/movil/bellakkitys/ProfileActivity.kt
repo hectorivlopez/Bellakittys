@@ -47,7 +47,7 @@ class ProfileActivity : AppCompatActivity() {
             if (user != null) {
                 currentUser = user
                 if (!user.imageUrl.isNullOrEmpty()) {
-                    firebaseManager.loadImage(user.imageUrl!!, profileImg)
+                    firebaseManager.loadImage(user.imageUrl!!, profileImg){}
                 }
             }
         }

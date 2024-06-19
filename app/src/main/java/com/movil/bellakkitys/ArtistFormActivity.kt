@@ -19,9 +19,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.movil.bellakkitys.data.model.Artist
 import android.Manifest
+import android.os.Environment
 import android.widget.ImageButton
 
 import com.movil.bellakkitys.data.model.Song
+import java.io.File
+import java.io.FileOutputStream
 
 class ArtistFormActivity : AppCompatActivity() {
     private lateinit var artistNameTxt: EditText
@@ -30,6 +33,8 @@ class ArtistFormActivity : AppCompatActivity() {
 
     private lateinit var createArtistBtn: Button
     private lateinit var backBtn: ImageButton
+
+    private var selectedImageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,12 +102,12 @@ class ArtistFormActivity : AppCompatActivity() {
     }
 
     fun add() {
-        if (artistNameTxt.text.isBlank() || descriptionTxt.text.isBlank()) {
+        if (artistNameTxt.text.isEmpty() || descriptionTxt.text.isEmpty() || selectedImageUri == null) {
             Toast.makeText(this, "Llene todos los campos", Toast.LENGTH_SHORT).show()
         } else {
             val artist = Artist(
                 artistNameTxt.text.toString(),
-                artistNameTxt.text.toString(),
+                selectedImageUri.toString(),
                 descriptionTxt.text.toString()
             )
             artist.add()
@@ -135,13 +140,25 @@ class ArtistFormActivity : AppCompatActivity() {
                     if (isCamera) {
                         val photo: Bitmap = data?.extras?.get("data") as Bitmap
                         artistImage.setImageBitmap(photo)
+                        selectedImageUri = saveImageToExternalStorage(photo)
                     } else {
-                        val selectedImageUri: Uri? = data?.data
+                        selectedImageUri = data?.data
+                        Toast.makeText(this, selectedImageUri.toString(), Toast.LENGTH_SHORT).show()
                         artistImage.setImageURI(selectedImageUri)
                     }
                 }
             }
         }
+    }
+
+    private fun saveImageToExternalStorage(bitmap: Bitmap): Uri {
+        val imageFileName = "JPEG_${System.currentTimeMillis()}.jpg"
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val imageFile = File(storageDir, imageFileName)
+        val fos = FileOutputStream(imageFile)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+        fos.close()
+        return Uri.fromFile(imageFile)
     }
 
     override fun onRequestPermissionsResult(

@@ -1,12 +1,15 @@
 package com.movil.bellakkitys.data.firebase
 
+import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
 import com.movil.bellakkitys.data.auth.User
 import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.data.model.Song
@@ -21,12 +24,15 @@ class FirebaseManager {
     private val songs = db.collection("songs")
     private val artists = db.collection("artists")
 
+    private val storage = Firebase.storage
+    private val storageRef = storage.reference
+
     // ------------------------------ Auth ------------------------------
     fun signIn(email: String, password: String, callback: (Result<User?>) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    getCurrentUser{user ->
+                    getCurrentUser { user ->
                         callback(Result.success(user))
                     }
 
@@ -43,7 +49,7 @@ class FirebaseManager {
                     val account = auth.currentUser
 
                     // Create user
-                    val uniqueID =  UUID.randomUUID().toString()
+                    val uniqueID = UUID.randomUUID().toString()
                     val userData = hashMapOf(
                         "accountId" to account?.uid,
                         "name" to name,
@@ -68,13 +74,13 @@ class FirebaseManager {
             }
     }
 
-    fun logout () {
+    fun logout() {
         auth.signOut()
     }
 
     fun isLoggedIn(): Boolean {
         val currentUser = auth.currentUser
-        if(currentUser != null) return true
+        if (currentUser != null) return true
         else return false
     }
 
@@ -123,7 +129,7 @@ class FirebaseManager {
     // ------------------------------ Queries ------------------------------
     // ---------- Create ----------
     fun createSong(song: Song) {
-        val uniqueID =  UUID.randomUUID().toString()
+        val uniqueID = UUID.randomUUID().toString()
         val data = hashMapOf(
             "title" to song.title,
             "artists" to song.artists,
@@ -141,24 +147,35 @@ class FirebaseManager {
     }
 
     fun createArtist(artist: Artist) {
-        val uniqueID =  UUID.randomUUID().toString()
-        val data = hashMapOf(
-            "name" to artist.name,
-            "imageUrl" to artist.imageUrl,
-            "description" to artist.description,
-        )
-        artists.document(uniqueID).set(data)
-            .addOnSuccessListener { documentReference ->
-                Log.d("Create Artist", "DocumentSnapshot added")
+        uploadImage(artist.imageUrl) { uri ->
+            if (uri != null) {
+                val uniqueID = UUID.randomUUID().toString()
+                val data = hashMapOf(
+                    "name" to artist.name,
+                    "imageUrl" to uri,
+                    "description" to artist.description,
+                )
+                artists.document(uniqueID).set(data)
+                    .addOnSuccessListener { documentReference ->
+                        Log.d("Create Artist", "DocumentSnapshot added")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("Create Artist", "Error adding document", e)
+                    }
             }
-            .addOnFailureListener { e ->
-                Log.w("Create Artist", "Error adding document", e)
-            }
+        }
+
+
     }
 
     // ---------- Read ----------
     // Find
-    private fun find(collection: CollectionReference, field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
+    private fun find(
+        collection: CollectionReference,
+        field: String,
+        value: String,
+        callback: (List<DocumentSnapshot>?) -> Unit
+    ) {
         val tcs = TaskCompletionSource<List<DocumentSnapshot>?>()
 
         collection.whereEqualTo(field, value)
@@ -186,19 +203,23 @@ class FirebaseManager {
     }
 
     fun findUsers(field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
-        find(users, field, value) {result -> callback(result)}
+        find(users, field, value) { result -> callback(result) }
     }
 
     fun findSongs(field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
-        find(songs, field, value) {result -> callback(result)}
+        find(songs, field, value) { result -> callback(result) }
     }
 
     fun findArtists(field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
-        find(artists, field, value) {result -> callback(result)}
+        find(artists, field, value) { result -> callback(result) }
     }
 
     // Find by id
-    private fun findById(collection: CollectionReference, id: String, callback: (DocumentSnapshot?) -> Unit) {
+    private fun findById(
+        collection: CollectionReference,
+        id: String,
+        callback: (DocumentSnapshot?) -> Unit
+    ) {
         // Use TaskCompletionSource to wait for the query to complete
         val tcs = TaskCompletionSource<DocumentSnapshot?>()
 
@@ -227,11 +248,11 @@ class FirebaseManager {
     }
 
     fun findSongById(id: String, callback: (DocumentSnapshot?) -> Unit) {
-        findById(songs, id) {result -> callback(result)}
+        findById(songs, id) { result -> callback(result) }
     }
 
     fun findArtistById(id: String, callback: (DocumentSnapshot?) -> Unit) {
-        findById(artists, id) {result -> callback(result)}
+        findById(artists, id) { result -> callback(result) }
     }
 
     // Get all
@@ -263,14 +284,32 @@ class FirebaseManager {
     }
 
     fun allSongs(callback: (List<DocumentSnapshot>?) -> Unit) {
-        all(songs) {result -> callback(result)}
+        all(songs) { result -> callback(result) }
     }
 
     fun allArtists(callback: (List<DocumentSnapshot>?) -> Unit) {
-        all(artists) {result -> callback(result)}
+        all(artists) { result -> callback(result) }
     }
 
     // ---------- Update ----------
 
     // ---------- Delete ----------
+
+    // ------------------------------ Upload files ------------------------------
+
+    fun uploadImage(imageUri: String, callback: (String?) -> Unit) {
+        val fileUri = Uri.parse(imageUri)
+
+        val uniqueID = UUID.randomUUID().toString()
+        val fileRef = storageRef.child("images/$uniqueID.png")
+
+        fileRef.putFile(fileUri)
+            .addOnSuccessListener {
+                callback(uniqueID)
+            }
+            .addOnFailureListener { exception ->
+                callback(null)
+            }
+    }
+
 }

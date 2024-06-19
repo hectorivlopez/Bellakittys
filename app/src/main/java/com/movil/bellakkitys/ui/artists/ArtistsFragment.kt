@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.ArtistAdapter
 import com.movil.bellakkitys.ArtistDetailsFragment
 import com.movil.bellakkitys.MainActivity
+import com.movil.bellakkitys.data.firebase.FirebaseManager
 import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.databinding.FragmentArtistsBinding
 
@@ -31,12 +32,16 @@ class ArtistsFragment : Fragment() {
     private lateinit var artistsRecyclerView: RecyclerView
     private lateinit var artistAdapter: ArtistAdapter
 
+    // Firebase
+    private val firebaseManager = FirebaseManager()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val artistsViewModel = ViewModelProvider(requireActivity()).get(ArtistsViewModel::class.java)
+        val artistsViewModel =
+            ViewModelProvider(requireActivity()).get(ArtistsViewModel::class.java)
 
         _binding = FragmentArtistsBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -48,14 +53,20 @@ class ArtistsFragment : Fragment() {
         }
 
         // ------------------------------ Validate user type------------------------------
-        val rol = artistsViewModel.rol
-        if(rol == "user") {
-            val parentLayout = binding.fragmentArtists
-            parentLayout.removeView(addArtistBtn)
+        firebaseManager.getCurrentUser { user ->
+            if (user?.rol == "user") {
+                val parentLayout = binding.fragmentArtists
+                parentLayout.removeView(addArtistBtn)
+            }
         }
 
+
         // ------------------------------ Artists List------------------------------
-        val artists = artistsViewModel.artistList
+        Artist.all { artists ->
+            artistsViewModel.artistList = artists
+        }
+
+        /*val artists = artistsViewModel.artistList
 
         artistsSearchBar = binding.artistsSearchBar
         artistsSearchBar.addTextChangedListener(object : TextWatcher {
@@ -80,16 +91,14 @@ class ArtistsFragment : Fragment() {
 
                 return filteredList
             }
-        })
-
-
+        })*/
 
 
         // ------------------------------ Artists Adapter ------------------------------
-        artistsRecyclerView = binding.artistsRecyclerView
-        artistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        artistAdapter = ArtistAdapter(artists)
-        artistsRecyclerView.adapter = artistAdapter
+        /* artistsRecyclerView = binding.artistsRecyclerView
+         artistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+         artistAdapter = ArtistAdapter(artists)
+         artistsRecyclerView.adapter = artistAdapter*/
 
         /*artistAdapter.setOnItemClickListener(object : ArtistAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, artist: Artist) {

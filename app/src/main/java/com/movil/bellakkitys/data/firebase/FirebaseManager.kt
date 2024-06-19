@@ -146,7 +146,6 @@ class FirebaseManager {
             "name" to artist.name,
             "imageUrl" to artist.imageUrl,
             "description" to artist.description,
-            "concert" to artist.concert,
         )
         artists.document(uniqueID).set(data)
             .addOnSuccessListener { documentReference ->

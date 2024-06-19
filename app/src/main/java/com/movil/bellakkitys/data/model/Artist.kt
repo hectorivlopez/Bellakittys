@@ -11,19 +11,16 @@ class Artist(
     var name: String,
     var imageUrl: String,
     var description: String,
-    var concert: String
 ) {
     constructor(
         id: String,
         name: String,
         imageUrl: String,
         description: String,
-        concert: String
     ) : this(
         name,
         imageUrl,
         description,
-        concert
     )
 
     companion object {
@@ -46,7 +43,6 @@ class Artist(
                 data?.get("name").toString(),
                 data?.get("imageUrl").toString(),
                 data?.get("description").toString(),
-                data?.get("concert").toString(),
             )
 
             return artist

@@ -57,7 +57,7 @@ class ConcertsFragment : Fragment() {
 
 
         // ------------------------------ Artists List------------------------------
-        val artists = artistsViewModel.artistList
+        /*val artists = artistsViewModel.artistList
 
         artistsConcertSearchBar = binding.artistsConcertsSearchBar
         artistsConcertSearchBar.addTextChangedListener(object : TextWatcher {
@@ -82,9 +82,9 @@ class ConcertsFragment : Fragment() {
 
                 return filteredList
             }
-        })
+        })*/
 
-        artistsRecyclerView = binding.calendarRecyclerView
+        /*artistsRecyclerView = binding.calendarRecyclerView
         artistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         artistAdapter = ArtistAdapter(artists)
         artistsRecyclerView.adapter = artistAdapter
@@ -106,7 +106,7 @@ class ConcertsFragment : Fragment() {
 
                 Toast.makeText(requireContext(), artist.concert, Toast.LENGTH_SHORT).show()
             }
-        })
+        })*/
 
         return root
     }

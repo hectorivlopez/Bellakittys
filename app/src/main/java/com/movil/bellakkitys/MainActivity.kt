@@ -343,14 +343,14 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
     fun addSong() {
         val intent = Intent(this, SongFormActivity::class.java)
         intent.putExtra("rol", rol)
-        finish()
+
         startActivity(intent)
     }
 
     fun addArtist() {
         val intent = Intent(this, ArtistFormActivity::class.java)
         intent.putExtra("rol", rol)
-        finish()
+
         startActivity(intent)
     }
 

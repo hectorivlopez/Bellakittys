@@ -16,6 +16,8 @@ import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.ArtistAdapter
+import com.movil.bellakkitys.ArtistDetailsFragment
+import com.movil.bellakkitys.MainActivity
 import com.movil.bellakkitys.MyApp
 import com.movil.bellakkitys.R
 import com.movil.bellakkitys.databinding.FragmentConcertsBinding
@@ -57,6 +59,61 @@ class ConcertsFragment : Fragment() {
 
 
         // ------------------------------ Artists List------------------------------
+        Artist.all { artists ->
+            artistsViewModel.artistList = artists
+
+            artistsConcertSearchBar = binding.artistsConcertsSearchBar
+            artistsConcertSearchBar.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
+                    // Filtrar canciones según el texto de búsqueda
+                    val filteredArtists = filterArtists(charSequence.toString())
+                    // Actualizar el adaptador con la lista filtrada
+                    artistAdapter.updateList(filteredArtists)
+                }
+
+                override fun afterTextChanged(editable: Editable) {}
+
+                fun filterArtists(query: String): List<Artist> {
+                    val filteredList = ArrayList<Artist>()
+
+                    for (artist in artists) {
+                        if (artist.name.toLowerCase().contains(query.toLowerCase())){
+                            filteredList.add(artist)
+                        }
+                    }
+
+                    return filteredList
+                }
+            })
+
+            artistsRecyclerView = binding.calendarRecyclerView
+            artistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            artistAdapter = ArtistAdapter(artists)
+            artistsRecyclerView.adapter = artistAdapter
+
+            // ------------------------------ Artists Adapter ------------------------------
+
+            artistAdapter.setOnItemClickListener(object : ArtistAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int, artist: Artist) {
+                    val dateArr = artist.concert.split("/")
+                    val year = dateArr[2].toInt() // Specify the year
+                    val month = dateArr[1].toInt() // Specify the month (0-11, January is 0)
+                    val dayOfMonth = dateArr[0].toInt() // Specify the day of the month
+
+                    val calendar = Calendar.getInstance()
+                    calendar.set(year, month, dayOfMonth)
+                    val millis = calendar.timeInMillis
+
+                    calendarView.setDate(millis, true, true)
+
+                    sendNotification(artist.name, artist.concert)
+
+                    Toast.makeText(requireContext(), artist.concert, Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
         /*val artists = artistsViewModel.artistList
 
         artistsConcertSearchBar = binding.artistsConcertsSearchBar

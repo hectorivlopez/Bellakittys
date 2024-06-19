@@ -56,8 +56,6 @@ class ArtistFormActivity : AppCompatActivity() {
             back()
         }
 
-
-
         artistImage.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 if (ContextCompat.checkSelfPermission(

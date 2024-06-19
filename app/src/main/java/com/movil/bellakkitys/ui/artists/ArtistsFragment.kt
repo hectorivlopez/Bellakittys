@@ -61,7 +61,6 @@ class ArtistsFragment : Fragment() {
             }
         }
 
-
         // ------------------------------ Artists List------------------------------
 
         Artist.all { artists ->
@@ -100,7 +99,6 @@ class ArtistsFragment : Fragment() {
 
             // ------------------------------ Artists Adapter ------------------------------
 
-
             artistAdapter.setOnItemClickListener(object : ArtistAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int, artist: Artist) {
                     //(activity as? MainActivity)?.playSong(artist)
@@ -114,7 +112,6 @@ class ArtistsFragment : Fragment() {
                 }
             })
         }
-
 
         return root
     }

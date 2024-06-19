@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -78,6 +79,11 @@ class ArtistDetailsFragment : Fragment() {
             val artistName = artistDetailsNameLabel.text.toString()
             findArtistByNameAndStartFormActivity(artistName)
         }
+
+        artistDeleteBtn.setOnClickListener {
+            val artistName = artistDetailsNameLabel.text.toString()
+            findArtistByNameAndDelete(artistName)
+        }
         // ------------------------------ Songs List------------------------------
         /* val songs = songsViewModel.songList
         var filteredSongs = ArrayList<Song>()
@@ -109,6 +115,16 @@ class ArtistDetailsFragment : Fragment() {
                 val intent = Intent(activity, ArtistFormActivity::class.java)
                 intent.putExtra("ARTIST_ID", artist.id)
                 startActivity(intent)
+            }
+        }
+    }
+
+    private fun findArtistByNameAndDelete(artistName: String) {
+        Artist.find("name", artistName) { artist ->
+            if (artist != null) {
+                artist.delete()
+                Toast.makeText(activity, "Artista eliminado", Toast.LENGTH_SHORT).show()
+                activity?.onBackPressed()
             }
         }
     }

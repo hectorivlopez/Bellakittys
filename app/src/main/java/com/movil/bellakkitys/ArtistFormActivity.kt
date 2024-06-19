@@ -18,6 +18,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import com.movil.bellakkitys.data.firebase.FirebaseManager
 import com.movil.bellakkitys.data.model.Artist
 import java.io.File
 import java.io.FileOutputStream
@@ -33,6 +35,7 @@ class ArtistFormActivity : AppCompatActivity() {
 
     private var selectedImageUri: Uri? = null
     private var artistId: String? = null
+    val firebaseManager = FirebaseManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,9 +107,11 @@ class ArtistFormActivity : AppCompatActivity() {
             if (artist != null) {
                 artistNameTxt.setText(artist.name)
                 descriptionTxt.setText(artist.description)
-                selectedImageUri = Uri.parse(artist.imageUrl)
-                artistImage.setImageURI(selectedImageUri)
                 artistConcertTxt.setText(artist.concert)
+                selectedImageUri = Uri.parse(artist.imageUrl)
+                firebaseManager.loadImage(artist.imageUrl, artistImage) {
+                    artistImage.isVisible = true
+                }
             }
         }
     }

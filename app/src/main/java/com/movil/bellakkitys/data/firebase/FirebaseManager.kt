@@ -2,6 +2,7 @@ package com.movil.bellakkitys.data.firebase
 
 import android.net.Uri
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.firebase.Firebase
@@ -13,6 +14,7 @@ import com.google.firebase.storage.storage
 import com.movil.bellakkitys.data.auth.User
 import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.data.model.Song
+import com.squareup.picasso.Picasso
 import java.util.UUID
 
 class FirebaseManager {
@@ -25,7 +27,8 @@ class FirebaseManager {
     private val artists = db.collection("artists")
 
     private val storage = Firebase.storage
-    private val storageRef = storage.reference
+    private val storageRef = storage.getReference()
+
 
     // ------------------------------ Auth ------------------------------
     fun signIn(email: String, password: String, callback: (Result<User?>) -> Unit) {
@@ -55,6 +58,7 @@ class FirebaseManager {
                         "name" to name,
                         "email" to email,
                         "rol" to "user",
+                        "imageUrl" to ""
                     )
                     users.document(uniqueID).set(userData)
                         .addOnSuccessListener { documentReference ->
@@ -66,7 +70,7 @@ class FirebaseManager {
                         }
 
                     // Return data in object
-                    val user = User(uniqueID, account?.uid, name, email, "user")
+                    val user = User(uniqueID, account?.uid, name, email, "user", "")
                     callback(Result.success(user))
                 } else {
                     callback(Result.failure(task.exception ?: Exception("Signup failed")))
@@ -117,7 +121,8 @@ class FirebaseManager {
                     data?.get("accountId").toString(),
                     data?.get("name").toString(),
                     data?.get("email").toString(),
-                    data?.get("rol").toString()
+                    data?.get("rol").toString(),
+                    data?.get("imageUrl").toString()
                 )
                 callback(user)
             } else {
@@ -170,12 +175,7 @@ class FirebaseManager {
 
     // ---------- Read ----------
     // Find
-    private fun find(
-        collection: CollectionReference,
-        field: String,
-        value: String,
-        callback: (List<DocumentSnapshot>?) -> Unit
-    ) {
+    private fun find(collection: CollectionReference, field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
         val tcs = TaskCompletionSource<List<DocumentSnapshot>?>()
 
         collection.whereEqualTo(field, value)
@@ -215,11 +215,7 @@ class FirebaseManager {
     }
 
     // Find by id
-    private fun findById(
-        collection: CollectionReference,
-        id: String,
-        callback: (DocumentSnapshot?) -> Unit
-    ) {
+    private fun findById(collection: CollectionReference, id: String, callback: (DocumentSnapshot?) -> Unit) {
         // Use TaskCompletionSource to wait for the query to complete
         val tcs = TaskCompletionSource<DocumentSnapshot?>()
 
@@ -245,6 +241,10 @@ class FirebaseManager {
                 callback(null)
             }
         }
+    }
+
+    fun findUserById(id: String, callback: (DocumentSnapshot?) -> Unit) {
+        findById(users, id) { result -> callback(result) }
     }
 
     fun findSongById(id: String, callback: (DocumentSnapshot?) -> Unit) {
@@ -283,6 +283,10 @@ class FirebaseManager {
         }
     }
 
+    fun allUsers(callback: (List<DocumentSnapshot>?) -> Unit) {
+        all(users) { result -> callback(result) }
+    }
+
     fun allSongs(callback: (List<DocumentSnapshot>?) -> Unit) {
         all(songs) { result -> callback(result) }
     }
@@ -292,6 +296,23 @@ class FirebaseManager {
     }
 
     // ---------- Update ----------
+    fun updateUser(user: User) {
+        val userData = hashMapOf(
+            "accountId" to user.accountId,
+            "name" to user.name,
+            "email" to user.email,
+            "rol" to user.rol,
+            "imageUrl" to user.imageUrl
+        )
+        users.document(user.id!!).set(userData)
+            .addOnSuccessListener { documentReference ->
+                Log.d("Update user", "DocumentSnapshot updated")
+
+            }
+            .addOnFailureListener { e ->
+                Log.w("Update user", "Error adding document", e)
+            }
+    }
 
     // ---------- Delete ----------
 
@@ -305,11 +326,24 @@ class FirebaseManager {
 
         fileRef.putFile(fileUri)
             .addOnSuccessListener {
-                callback(uniqueID)
+                callback("images/$uniqueID.png")
             }
             .addOnFailureListener { exception ->
                 callback(null)
             }
+    }
+
+    fun loadImage(imagePath: String, imageView: ImageView) {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val imageRef = storageRef.child(imagePath)
+
+        imageRef.downloadUrl.addOnSuccessListener { uri ->
+            val imageUrl = uri.toString()
+            Picasso.get().load(imageUrl).into(imageView)
+        }.addOnFailureListener {
+            // Handle any errors
+        }
     }
 
 }

@@ -14,6 +14,7 @@ class UserPreferences(context: Context) {
             putString("name", user.name)
             putString("email", user.email)
             putString("rol", user.rol)
+            putString("imageUrl", user.imageUrl)
             apply()
         }
     }
@@ -24,9 +25,10 @@ class UserPreferences(context: Context) {
         val name = preferences.getString("name", null)
         val email = preferences.getString("email", null)
         val rol = preferences.getString("rol", null)
+        val imageUrl = preferences.getString("imageUrl", null)
 
         return if (id != null && accountId != null && email != null && name != null && rol != null) {
-            User(id, accountId, name, email, rol)
+            User(id, accountId, name, email, rol, imageUrl)
         } else {
             null
         }

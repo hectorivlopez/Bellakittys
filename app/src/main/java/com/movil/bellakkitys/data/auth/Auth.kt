@@ -18,5 +18,9 @@ class Auth {
         fun logOut() {
             firebaseManager.logout()
         }
+
+        fun currentUser(callback: (User?) -> Unit) {
+            firebaseManager.getCurrentUser { result -> callback(result) }
+        }
     }
 }

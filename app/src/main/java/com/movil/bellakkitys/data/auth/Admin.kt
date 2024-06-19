@@ -17,4 +17,4 @@ class Admin(
     var adminLastLogin: Long,
     var adminTasksCompleted: Int,
     var adminDepartment: String
-) : User(id, accountId, username, email, "admin")
+) : User(id, accountId, username, email, "admin", "")

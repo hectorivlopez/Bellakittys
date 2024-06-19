@@ -29,6 +29,7 @@ import java.io.FileOutputStream
 class ArtistFormActivity : AppCompatActivity() {
     private lateinit var artistNameTxt: EditText
     private lateinit var descriptionTxt: EditText
+    private lateinit var artistConcertTxt: EditText
     private lateinit var artistImage: ImageView
 
     private lateinit var createArtistBtn: Button
@@ -42,6 +43,7 @@ class ArtistFormActivity : AppCompatActivity() {
 
         artistNameTxt = findViewById(R.id.artistNameTxt)
         descriptionTxt = findViewById(R.id.descriptionTxt)
+        artistConcertTxt = findViewById(R.id.artistConcertTxt)
         artistImage = findViewById(R.id.artistImage)
 
         createArtistBtn = findViewById(R.id.createArtistBtn)
@@ -106,9 +108,11 @@ class ArtistFormActivity : AppCompatActivity() {
             Toast.makeText(this, "Llene todos los campos", Toast.LENGTH_SHORT).show()
         } else {
             val artist = Artist(
+                "",
                 artistNameTxt.text.toString(),
                 selectedImageUri.toString(),
-                descriptionTxt.text.toString()
+                descriptionTxt.text.toString(),
+                artistConcertTxt.text.toString()
             )
             artist.add()
 

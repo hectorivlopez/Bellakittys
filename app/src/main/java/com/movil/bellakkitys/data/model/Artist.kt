@@ -12,6 +12,7 @@ class Artist(
     var name: String,
     var imageUrl: String,
     var description: String,
+    var concert: String,
 ) {
     companion object {
         val firebaseManager = FirebaseManager()
@@ -33,6 +34,7 @@ class Artist(
                 data?.get("name").toString(),
                 data?.get("imageUrl").toString(),
                 data?.get("description").toString(),
+                data?.get("concert").toString(),
             )
 
             return artist

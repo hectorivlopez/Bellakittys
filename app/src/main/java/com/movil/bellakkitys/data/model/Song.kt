@@ -6,13 +6,27 @@ import com.movil.bellakkitys.data.firebase.FirebaseManager
 
 // Nombre del archivo: Song.kt
 class Song(
-    var id: String,
     var title: String,
     var artists: ArrayList<Artist>,
     var imageUrl: String,
     var duration: String,
     var fileUrl: String
 ) {
+    constructor (
+        id: String,
+        title: String,
+        artists: ArrayList<Artist>,
+        imageUrl: String,
+        duration: String,
+        fileUrl: String
+    ) : this(
+        title,
+        artists,
+        imageUrl,
+        duration,
+        fileUrl
+    )
+
     var active: Boolean = false
 
     companion object {
@@ -33,9 +47,9 @@ class Song(
             val artistsIds = data?.get("artists") as List<String>
             val artists = ArrayList<Artist>()
 
-            for(artistId in artistsIds) {
-                Artist.findById(artistId) {artist ->
-                    if(artist != null) {
+            for (artistId in artistsIds) {
+                Artist.findById(artistId) { artist ->
+                    if (artist != null) {
                         artists.add(artist)
                     }
                 }
@@ -57,24 +71,26 @@ class Song(
         // Read
         fun findById(id: String, callback: (Song?) -> Unit) {
             firebaseManager.findSongById(id) { result ->
-                if(result != null) {
+                if (result != null) {
                     val song = getSong(result)
                     callback(song)
                 }
             }
         }
+
         fun find(key: String, value: String, callback: (Song) -> Unit) {
             firebaseManager.findSongs(key, value) { result ->
-                if(result != null) {
+                if (result != null) {
                     val songData = result[0]
                     val song = getSong(songData)
                     callback(song)
                 }
             }
         }
+
         fun findAll(key: String, value: String, callback: (List<Song>) -> Unit) {
             firebaseManager.findSongs(key, value) { result ->
-                if(result != null) {
+                if (result != null) {
                     val songs = getSongs(result)
                     callback(songs)
                 }
@@ -83,7 +99,7 @@ class Song(
 
         fun all(callback: (List<Song>) -> Unit) {
             firebaseManager.allSongs() { result ->
-                if(result != null) {
+                if (result != null) {
                     val songs = getSongs(result)
                     callback(songs)
                 }
@@ -92,6 +108,9 @@ class Song(
     }
 
     // Create
+    fun add() {
+        firebaseManager.createSong(this)
+    }
 
     // Update
 

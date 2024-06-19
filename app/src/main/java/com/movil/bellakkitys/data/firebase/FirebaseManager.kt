@@ -8,6 +8,8 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.firestore
 import com.movil.bellakkitys.data.auth.User
+import com.movil.bellakkitys.data.model.Artist
+import com.movil.bellakkitys.data.model.Song
 import java.util.UUID
 
 class FirebaseManager {
@@ -120,6 +122,41 @@ class FirebaseManager {
 
     // ------------------------------ Queries ------------------------------
     // ---------- Create ----------
+    fun createSong(song: Song) {
+        val uniqueID =  UUID.randomUUID().toString()
+        val data = hashMapOf(
+            "title" to song.title,
+            "artists" to song.artists,
+            "imageUrl" to song.imageUrl,
+            "duration" to song.duration,
+            "fileUrl" to song.fileUrl,
+        )
+        songs.document(uniqueID).set(data)
+            .addOnSuccessListener { documentReference ->
+                Log.d("Create Song", "DocumentSnapshot added")
+            }
+            .addOnFailureListener { e ->
+                Log.w("Create Song", "Error adding document", e)
+            }
+    }
+
+    fun createArtist(artist: Artist) {
+        val uniqueID =  UUID.randomUUID().toString()
+        val data = hashMapOf(
+            "name" to artist.name,
+            "imageUrl" to artist.imageUrl,
+            "description" to artist.description,
+            "concert" to artist.concert,
+        )
+        songs.document(uniqueID).set(data)
+            .addOnSuccessListener { documentReference ->
+                Log.d("Create Artist", "DocumentSnapshot added")
+            }
+            .addOnFailureListener { e ->
+                Log.w("Create Artist", "Error adding document", e)
+            }
+    }
+
     // ---------- Read ----------
     // Find
     private fun find(collection: CollectionReference, field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {

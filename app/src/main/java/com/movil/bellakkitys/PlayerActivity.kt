@@ -10,7 +10,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
-import com.squareup.picasso.Picasso
+import com.movil.bellakkitys.data.model.Song
 
 class PlayerActivity : AppCompatActivity() {
     // MediaPlayer
@@ -84,9 +84,9 @@ class PlayerActivity : AppCompatActivity() {
         // ------------------------------ Elements data------------------------------
         playerSongImage = findViewById(R.id.playerSongImage)
         if (songImage != null) {
-            Picasso.get()
-                .load(songImage)
-                .into(playerSongImage)
+            if (songImage.isNotEmpty()) {
+                Song.firebaseManager.loadImage(songImage, playerSongImage)
+            }
         }
 
         playerSongTitleLabel = findViewById(R.id.playerSongTitleLabel)

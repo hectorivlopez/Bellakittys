@@ -30,7 +30,6 @@ import java.io.FileOutputStream
 
 class SongFormActivity : AppCompatActivity() {
     private lateinit var titleTxt: EditText
-    private lateinit var artistTxt: EditText
     private lateinit var durationTxt: EditText
     private lateinit var audioLabel: TextView
     private lateinit var songImage: ImageView

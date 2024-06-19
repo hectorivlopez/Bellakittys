@@ -139,15 +139,22 @@ class FirebaseManager {
     // ------------------------------ Queries ------------------------------
     // ---------- Create ----------
     fun createSong(song: Song) {
-        uploadAudio(song.fileUrl) {audioUri ->
-            uploadImage(song.imageUrl) { imageUri ->
+        uploadImage(song.imageUrl) { imageUri ->
+            if (imageUri != null) {
                 val uniqueID = UUID.randomUUID().toString()
+
+                val artists = mutableListOf<String>()
+                for (artist in song.artists) {
+                    artists.add(artist.id)
+                }
+                song.imageUrl = imageUri
+
                 val data = hashMapOf(
                     "title" to song.title,
-                    "artists" to song.artists,
-                    "imageUrl" to imageUri,
+                    "artists" to artists,
+                    "imageUrl" to song.imageUrl,
                     "duration" to song.duration,
-                    "fileUrl" to audioUri,
+                    "fileUrl" to song.fileUrl,
                 )
                 songs.document(uniqueID).set(data)
                     .addOnSuccessListener { documentReference ->
@@ -156,7 +163,21 @@ class FirebaseManager {
                     .addOnFailureListener { e ->
                         Log.w("Create Song", "Error adding document", e)
                     }
+
+                uploadAudio(song.fileUrl) { audioUri ->
+                    if (audioUri != null) {
+                            Log.d("Cosotat", audioUri)
+                        Song.find("title", song.title) {result ->
+                            song.id = result.id
+                            song.fileUrl = audioUri
+                            song.update()
+                        }
+                    }
+                }
             }
+
+
+
         }
 
     }
@@ -186,7 +207,12 @@ class FirebaseManager {
 
     // ---------- Read ----------
     // Find
-    private fun find(collection: CollectionReference, field: String, value: String, callback: (List<DocumentSnapshot>?) -> Unit) {
+    private fun find(
+        collection: CollectionReference,
+        field: String,
+        value: String,
+        callback: (List<DocumentSnapshot>?) -> Unit
+    ) {
         val tcs = TaskCompletionSource<List<DocumentSnapshot>?>()
 
         collection.whereEqualTo(field, value)
@@ -226,7 +252,11 @@ class FirebaseManager {
     }
 
     // Find by id
-    private fun findById(collection: CollectionReference, id: String, callback: (DocumentSnapshot?) -> Unit) {
+    private fun findById(
+        collection: CollectionReference,
+        id: String,
+        callback: (DocumentSnapshot?) -> Unit
+    ) {
         // Use TaskCompletionSource to wait for the query to complete
         val tcs = TaskCompletionSource<DocumentSnapshot?>()
 
@@ -367,21 +397,21 @@ class FirebaseManager {
                 Log.d("Delete document", "DocumentSnapshot successfully deleted!")
                 callback()
             }
-            .addOnFailureListener {
-                e -> Log.w("Delete document", "Error deleting document", e)
+            .addOnFailureListener { e ->
+                Log.w("Delete document", "Error deleting document", e)
             }
     }
 
     fun deleteUser(id: String, callback: () -> Unit) {
-        delete(users, id) {callback()}
+        delete(users, id) { callback() }
     }
 
     fun deleteSong(id: String, callback: () -> Unit) {
-        delete(songs, id) {callback()}
+        delete(songs, id) { callback() }
     }
 
     fun deleteArtist(id: String, callback: () -> Unit) {
-        delete(artists, id) {callback()}
+        delete(artists, id) { callback() }
     }
     // ------------------------------ Upload files ------------------------------
 
@@ -405,7 +435,7 @@ class FirebaseManager {
 
         imageRef.downloadUrl.addOnSuccessListener { uri ->
             val imageUrl = uri.toString()
-            Picasso.get().load(imageUrl).into(imageView, object: Callback {
+            Picasso.get().load(imageUrl).into(imageView, object : Callback {
                 override fun onSuccess() {
                     callback()
                 }

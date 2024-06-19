@@ -7,7 +7,7 @@ import com.movil.bellakkitys.data.model.Song
 
 class SongsViewModel : ViewModel() {
     var rol = "user"
-    lateinit var songList: ArrayList<Song>
+    lateinit var songList: List<Song>
 
     var songs = ArrayList<Song>()
 

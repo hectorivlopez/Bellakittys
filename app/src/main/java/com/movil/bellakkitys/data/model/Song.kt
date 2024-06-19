@@ -8,7 +8,7 @@ import com.movil.bellakkitys.data.firebase.FirebaseManager
 class Song(
     var id: String,
     var title: String,
-    var artists: ArrayList<Artist>,
+    var artists: List<Artist>,
     var imageUrl: String,
     var duration: String,
     var fileUrl: String

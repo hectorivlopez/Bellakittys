@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.MainActivity
 import com.movil.bellakkitys.R
 import com.movil.bellakkitys.SongAdapter
+import com.movil.bellakkitys.data.firebase.FirebaseManager
+import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.data.model.Song
 import com.movil.bellakkitys.databinding.FragmentSongsBinding
 import com.movil.bellakkitys.ui.artists.ArtistsViewModel
@@ -35,6 +37,9 @@ class SongsFragment : Fragment() {
 
     private var currentSongTitle: TextView? = null
 
+    // Firebase
+    private val firebaseManager = FirebaseManager()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,58 +58,59 @@ class SongsFragment : Fragment() {
         }
 
         // ------------------------------ Validate user type------------------------------
-        val rol = songsViewModel.rol
-        if(rol == "user") {
-            val parentLayout = binding.fragmentSongs
-            parentLayout.removeView(addSongBtn)
+        var rol = "user"
+        firebaseManager.getCurrentUser { user ->
+            if (user?.rol == "user") {
+                rol = user.rol!!
+                val parentLayout = binding.fragmentSongs
+                parentLayout.removeView(addSongBtn)
+            }
         }
 
         // ------------------------------ Songs List------------------------------
-        val songs = songsViewModel.songList
+        Song.all { songs ->
+            songsViewModel.songList = songs
 
+            songsSearchBar = root.findViewById(R.id.songsSearchBar)
+            songsSearchBar.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {}
 
-
-
-
-        songsSearchBar = root.findViewById(R.id.songsSearchBar)
-        songsSearchBar.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
-                // Filtrar canciones según el texto de búsqueda
-                val filteredSongs = filterSongs(charSequence.toString())
-                // Actualizar el adaptador con la lista filtrada
-                songAdapter.updateList(filteredSongs)
-            }
-
-            override fun afterTextChanged(editable: Editable) {}
-            fun filterSongs(query: String): List<Song> {
-                val filteredList = ArrayList<Song>()
-
-                for (song in songs) {
-                    // Filtrar por nombre de la canción o artista (puedes ajustar según tus necesidades)
-                    if (song.title.toLowerCase().contains(query.toLowerCase()) ||
-                        song.artists.any { artist -> artist.name.toLowerCase().contains(query.toLowerCase()) }) {
-                        filteredList.add(song)
-                    }
+                override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
+                    // Filtrar canciones según el texto de búsqueda
+                    val filteredSongs = filterSongs(charSequence.toString())
+                    // Actualizar el adaptador con la lista filtrada
+                    songAdapter.updateList(filteredSongs)
                 }
 
-                return filteredList
-            }
-        })
+                override fun afterTextChanged(editable: Editable) {}
+                fun filterSongs(query: String): List<Song> {
+                    val filteredList = ArrayList<Song>()
+
+                    for (song in songs) {
+                        // Filtrar por nombre de la canción o artista (puedes ajustar según tus necesidades)
+                        if (song.title.toLowerCase().contains(query.toLowerCase()) ||
+                            song.artists.any { artist -> artist.name.toLowerCase().contains(query.toLowerCase()) }) {
+                            filteredList.add(song)
+                        }
+                    }
+
+                    return filteredList
+                }
+            })
 
 
-        // ------------------------------ Songs Adapter------------------------------
-        songsRecyclerView = binding.songsRecyclerView
-        songsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        songAdapter = SongAdapter(songs, rol)
-        songsRecyclerView.adapter = songAdapter
+            // ------------------------------ Songs Adapter------------------------------
+            songsRecyclerView = binding.songsRecyclerView
+            songsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            songAdapter = SongAdapter(songs, rol)
+            songsRecyclerView.adapter = songAdapter
 
-        songAdapter.setOnItemClickListener(object : SongAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int, song: Song, songTitle: TextView) {
-                (activity as? MainActivity)?.playSong(song, songTitle)
-            }
-        })
+            songAdapter.setOnItemClickListener(object : SongAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int, song: Song, songTitle: TextView) {
+                    (activity as? MainActivity)?.playSong(song, songTitle)
+                }
+            })
+        }
 
         return root
     }

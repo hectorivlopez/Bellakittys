@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.data.model.Song
 
-class SongAdapter(private var songs: ArrayList<Song>, private val rol: String) : RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
+class SongAdapter(private var songs: List<Song>, private val rol: String) : RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.songs_list_item, parent, false)

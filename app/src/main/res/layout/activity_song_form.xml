@@ -8,23 +8,32 @@
     android:background="@drawable/bg_gradient"
     tools:context=".SongFormActivity">
 
-    <Spinner
-        android:id="@+id/fileSpn"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/rounded_input"
-        android:textColor="#e7e7e7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/durationTxt" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/songImageContainer"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        app:cardCornerRadius="200dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <ImageView
+            android:id="@+id/songImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/yo" />
+    </androidx.cardview.widget.CardView>
 
     <EditText
         android:id="@+id/titleTxt"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/rounded_input"
         android:ems="10"
         android:hint="Titulo"
@@ -32,18 +41,17 @@
         android:textColor="#e7e7e7"
         android:textColorHint="#d0d0d0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/songImageContainer" />
 
     <EditText
-        android:id="@+id/artistTxt"
+        android:id="@+id/durationTxt"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="25dp"
         android:background="@drawable/rounded_input"
         android:ems="10"
-        android:hint="Artista/s"
+        android:hint="Duracion"
         android:inputType="text"
         android:textColor="#e7e7e7"
         android:textColorHint="#d0d0d0"
@@ -52,43 +60,63 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTxt" />
 
-    <Button
-        android:id="@+id/button9"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:id="@+id/spinnerContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_button"
-        android:onClick="add"
-        android:text="@string/add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.182"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fileSpn" />
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/durationTxt"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginEnd="75dp"
+        android:gravity="center_horizontal"
+        />
+
+
 
     <Button
-        android:id="@+id/button10"
+        android:id="@+id/addArtistBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:background="@drawable/rounded_button"
-        android:onClick="back"
-        android:text="@string/back"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Agregar Artista"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.814"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fileSpn" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerContainer" />
 
-    <EditText
-        android:id="@+id/durationTxt"
+    <Button
+        android:id="@+id/pickAudioBtn"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:background="@drawable/rounded_button"
-        android:ems="10"
-        android:inputType="time"
-        android:textColor="#e7e7e7"
-        android:textColorHint="#d0d0d0"
+        android:text="Seleccionar Audio"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/artistTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/addArtistBtn" />
+
+    <TextView
+        android:id="@+id/audioLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/pickAudioBtn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/white"
+        />
+
+    <Button
+        android:id="@+id/registerSongBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button"
+        android:text="Registrar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="40dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

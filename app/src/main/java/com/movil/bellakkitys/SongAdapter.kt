@@ -3,13 +3,14 @@ package com.movil.bellakkitys
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.data.model.Song
 
-class SongAdapter(private var songs: ArrayList<Song>) : RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
+class SongAdapter(private var songs: ArrayList<Song>, private val rol: String) : RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.songs_list_item, parent, false)
@@ -18,7 +19,7 @@ class SongAdapter(private var songs: ArrayList<Song>) : RecyclerView.Adapter<Son
 
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
         val currentSong = songs[position]
-        holder.bind(currentSong)
+        holder.bind(currentSong, rol)
 
         // Margin bottom to the last element
         if (position == itemCount - 1) {
@@ -68,6 +69,7 @@ class SongAdapter(private var songs: ArrayList<Song>) : RecyclerView.Adapter<Son
         private val songArtist: TextView = itemView.findViewById(R.id.songArtist)
         private val songThumbnail: ImageView = itemView.findViewById(R.id.songThumbnail)
         private val songDuration: TextView = itemView.findViewById(R.id.songDuration)
+        private val editSongBtn: Button = itemView.findViewById(R.id.editSongBtn)
 
         init {
             // New code: Set click listener for the item view
@@ -82,7 +84,7 @@ class SongAdapter(private var songs: ArrayList<Song>) : RecyclerView.Adapter<Son
 
         }
 
-        fun bind(song: Song) {
+        fun bind(song: Song, rol: String) {
             songTitle.text = song.title
             songArtist.text = song.artists.toString()
             if (song.imageUrl.isNotEmpty()) {
@@ -97,6 +99,14 @@ class SongAdapter(private var songs: ArrayList<Song>) : RecyclerView.Adapter<Son
             }
             // Load song thumbnail/image using a library like Picasso/Glide
             // Example: Glide.with(itemView.context).load(song.thumbnailUrl).into(songThumbnail)
+            // Show/hide elements based on the user role
+            if (rol == "user") {
+                editSongBtn.visibility = View.GONE
+                songDuration.visibility = View.VISIBLE
+            } else if (rol == "admin") {
+                editSongBtn.visibility = View.VISIBLE
+                songDuration.visibility = View.GONE
+            }
         }
     }
 

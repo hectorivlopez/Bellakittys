@@ -97,7 +97,7 @@ class SongsFragment : Fragment() {
         // ------------------------------ Songs Adapter------------------------------
         songsRecyclerView = binding.songsRecyclerView
         songsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        songAdapter = SongAdapter(songs)
+        songAdapter = SongAdapter(songs, rol)
         songsRecyclerView.adapter = songAdapter
 
         songAdapter.setOnItemClickListener(object : SongAdapter.OnItemClickListener {

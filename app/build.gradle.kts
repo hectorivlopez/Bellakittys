@@ -61,6 +61,8 @@ dependencies {
     // Firestore
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-firestore-ktx:25.0.0")
+    // Firebase storage
+    implementation("com.google.firebase:firebase-storage")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

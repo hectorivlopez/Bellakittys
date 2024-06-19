@@ -11,6 +11,9 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.storage
 import com.movil.bellakkitys.databinding.FragmentArtistDetailsBinding
 import com.movil.bellakkitys.ui.artists.ArtistsViewModel
 import com.movil.bellakkitys.data.model.Song
@@ -22,6 +25,7 @@ class ArtistDetailsFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    lateinit var storage: FirebaseStorage
 
     // Elements
     private lateinit var artistModifyBtn: Button
@@ -42,6 +46,7 @@ class ArtistDetailsFragment : Fragment() {
 
         _binding = FragmentArtistDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        storage = Firebase.storage
 
         // ------------------------------ Elements------------------------------
         artistModifyBtn = binding.artistModifyBtn
@@ -64,17 +69,17 @@ class ArtistDetailsFragment : Fragment() {
         }
 
         // ------------------------------ Songs List------------------------------
-       /* val songs = songsViewModel.songList
+        /* val songs = songsViewModel.songList
         var filteredSongs = ArrayList<Song>()
         for(song in songs) {
             val artistsArray = song.artist.split(", ")
             if(artistsArray.contains(artistsViewModel.artistName)) {
                 filteredSongs.add(song)
             }
-        }
+        }*/
 
         // ------------------------------ Artists Adapter ------------------------------
-        artistSongsRecyclerView = binding.artistSongsRecyclerView
+        /* artistSongsRecyclerView = binding.artistSongsRecyclerView
         artistSongsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         songAdapter = SongAdapter(filteredSongs)
         artistSongsRecyclerView.adapter = songAdapter

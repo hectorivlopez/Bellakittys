@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
+import com.movil.bellakkitys.data.firebase.FirebaseManager
 import com.movil.bellakkitys.databinding.FragmentArtistDetailsBinding
 import com.movil.bellakkitys.ui.artists.ArtistsViewModel
 import com.movil.bellakkitys.data.model.Song
@@ -47,6 +48,7 @@ class ArtistDetailsFragment : Fragment() {
         _binding = FragmentArtistDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
         storage = Firebase.storage
+        val firebaseManager = FirebaseManager()
 
         // ------------------------------ Elements------------------------------
         artistModifyBtn = binding.artistModifyBtn
@@ -55,7 +57,7 @@ class ArtistDetailsFragment : Fragment() {
         artistDetailsNameLabel = binding.artistDetailsNameLabel
         artistDetailsDescriptionLabel = binding.artistDetailsDescriptionLabel
 
-        artistsViewModel.artistImage?.let { artistDetailsImage.setImageResource(it) }
+        firebaseManager.loadImage(artistsViewModel.artistImageUrl,artistDetailsImage)
         artistDetailsNameLabel.text = artistsViewModel.artistName
         artistDetailsDescriptionLabel.text = artistsViewModel.artistDescription
 

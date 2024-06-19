@@ -11,7 +11,7 @@ class ArtistsViewModel : ViewModel() {
 
     var artist = ArrayList<Artist>()
 
-    var artistImage: Int? = null
+    var artistImageUrl = ""
     var artistName = ""
     var artistDescription = ""
 

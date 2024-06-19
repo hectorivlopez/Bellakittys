@@ -62,56 +62,58 @@ class ArtistsFragment : Fragment() {
 
 
         // ------------------------------ Artists List------------------------------
+
         Artist.all { artists ->
             artistsViewModel.artistList = artists
-        }
 
-        /*val artists = artistsViewModel.artistList
+            artistsSearchBar = binding.artistsSearchBar
+            artistsSearchBar.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {}
 
-        artistsSearchBar = binding.artistsSearchBar
-        artistsSearchBar.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
-                // Filtrar canciones según el texto de búsqueda
-                val filteredArtists = filterArtists(charSequence.toString())
-                // Actualizar el adaptador con la lista filtrada
-                artistAdapter.updateList(filteredArtists)
-            }
-
-            override fun afterTextChanged(editable: Editable) {}
-            fun filterArtists(query: String): List<Artist> {
-                val filteredList = ArrayList<Artist>()
-
-                for (artist in artists) {
-                    if (artist.name.toLowerCase().contains(query.toLowerCase())){
-                        filteredList.add(artist)
-                    }
+                override fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
+                    // Filtrar canciones según el texto de búsqueda
+                    val filteredArtists = filterArtists(charSequence.toString())
+                    // Actualizar el adaptador con la lista filtrada
+                    artistAdapter.updateList(filteredArtists)
                 }
 
-                return filteredList
-            }
-        })*/
+                override fun afterTextChanged(editable: Editable) {}
+
+                fun filterArtists(query: String): List<Artist> {
+                    val filteredList = ArrayList<Artist>()
+
+                    for (artist in artists) {
+                        if (artist.name.toLowerCase().contains(query.toLowerCase())){
+                            filteredList.add(artist)
+                        }
+                    }
+
+                    return filteredList
+                }
+            })
+
+            artistsRecyclerView = binding.artistsRecyclerView
+            artistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            artistAdapter = ArtistAdapter(artists)
+            artistsRecyclerView.adapter = artistAdapter
+
+            // ------------------------------ Artists Adapter ------------------------------
 
 
-        // ------------------------------ Artists Adapter ------------------------------
-        /* artistsRecyclerView = binding.artistsRecyclerView
-         artistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-         artistAdapter = ArtistAdapter(artists)
-         artistsRecyclerView.adapter = artistAdapter*/
-
-        /*artistAdapter.setOnItemClickListener(object : ArtistAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int, artist: Artist) {
-                //(activity as? MainActivity)?.playSong(artist)
-                artistsViewModel.artistImage = artist.image
-                artistsViewModel.artistName = artist.name
-                artistsViewModel.artistDescription = artist.description
+            artistAdapter.setOnItemClickListener(object : ArtistAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int, artist: Artist) {
+                    //(activity as? MainActivity)?.playSong(artist)
+                    artistsViewModel.artistImageUrl = artist.imageUrl
+                    artistsViewModel.artistName = artist.name
+                    artistsViewModel.artistDescription = artist.description
 
 
-                val mainActivity = activity as MainActivity?
-                mainActivity?.replaceFragment(ArtistDetailsFragment())
-            }
-        })*/
+                    val mainActivity = activity as MainActivity?
+                    mainActivity?.replaceFragment(ArtistDetailsFragment())
+                }
+            })
+        }
+
 
         return root
     }

@@ -1,7 +1,7 @@
 package com.movil.bellakkitys
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +9,16 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import com.movil.bellakkitys.data.firebase.FirebaseManager
+import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.databinding.FragmentArtistDetailsBinding
 import com.movil.bellakkitys.ui.artists.ArtistsViewModel
-import com.movil.bellakkitys.data.model.Song
 import com.movil.bellakkitys.ui.songs.SongsViewModel
 
 class ArtistDetailsFragment : Fragment() {
@@ -74,6 +74,10 @@ class ArtistDetailsFragment : Fragment() {
             }
         }
 
+        artistModifyBtn.setOnClickListener {
+            val artistName = artistDetailsNameLabel.text.toString()
+            findArtistByNameAndStartFormActivity(artistName)
+        }
         // ------------------------------ Songs List------------------------------
         /* val songs = songsViewModel.songList
         var filteredSongs = ArrayList<Song>()
@@ -97,6 +101,16 @@ class ArtistDetailsFragment : Fragment() {
         })*/
 
         return root
+    }
+
+    private fun findArtistByNameAndStartFormActivity(artistName: String) {
+        Artist.find("name", artistName) { artist ->
+            if (artist != null) {
+                val intent = Intent(activity, ArtistFormActivity::class.java)
+                intent.putExtra("ARTIST_ID", artist.id)
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onDestroyView() {

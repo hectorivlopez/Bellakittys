@@ -1,28 +1,24 @@
 package com.movil.bellakkitys
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.movil.bellakkitys.data.model.Artist
-import android.Manifest
-import android.os.Environment
-import android.widget.ImageButton
-
-import com.movil.bellakkitys.data.model.Song
 import java.io.File
 import java.io.FileOutputStream
 
@@ -36,6 +32,7 @@ class ArtistFormActivity : AppCompatActivity() {
     private lateinit var backBtn: ImageButton
 
     private var selectedImageUri: Uri? = null
+    private var artistId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +42,20 @@ class ArtistFormActivity : AppCompatActivity() {
         descriptionTxt = findViewById(R.id.descriptionTxt)
         artistConcertTxt = findViewById(R.id.artistConcertTxt)
         artistImage = findViewById(R.id.artistImage)
-
         createArtistBtn = findViewById(R.id.createArtistBtn)
-        createArtistBtn.setOnClickListener {
-            add()
+        backBtn = findViewById(R.id.backBtn)
+
+        artistId = intent.getStringExtra("ARTIST_ID")
+
+        if (artistId != null) {
+            loadArtistData(artistId!!)
+            createArtistBtn.text = "Guardar cambios"
+            createArtistBtn.setOnClickListener { update() }
+        } else {
+            createArtistBtn.text = "Crear artista"
+            createArtistBtn.setOnClickListener { add() }
         }
 
-        backBtn = findViewById(R.id.backBtn)
         backBtn.setOnClickListener {
             back()
         }
@@ -95,6 +99,18 @@ class ArtistFormActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadArtistData(artistId: String) {
+        Artist.findById(artistId) { artist ->
+            if (artist != null) {
+                artistNameTxt.setText(artist.name)
+                descriptionTxt.setText(artist.description)
+                selectedImageUri = Uri.parse(artist.imageUrl)
+                artistImage.setImageURI(selectedImageUri)
+                artistConcertTxt.setText(artist.concert)
+            }
+        }
+    }
+
     fun back() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
@@ -120,6 +136,24 @@ class ArtistFormActivity : AppCompatActivity() {
         }
     }
 
+    private fun update() {
+        if (artistId != null && artistNameTxt.text.isNotEmpty() && descriptionTxt.text.isNotEmpty() && selectedImageUri != null) {
+            val artist = Artist(
+                artistId!!,
+                artistNameTxt.text.toString(),
+                selectedImageUri.toString(),
+                descriptionTxt.text.toString(),
+                artistConcertTxt.text.toString()
+            )
+            artist.update()
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            Toast.makeText(this, "Llene todos los campos", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private fun showImagePickerOptions() {
         val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)

@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -20,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.movil.bellakkitys.data.firebase.FirebaseManager
 import com.movil.bellakkitys.databinding.ActivityMainBinding
 import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.ui.artists.ArtistsViewModel
@@ -278,6 +280,8 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
 
 
     // ------------------------------ Functions------------------------------
+    private val firebaseManager = FirebaseManager()
+
     fun playSong(song: Song, songTitle: TextView) {
         currentSong?.active = false
         song.active = true
@@ -292,32 +296,37 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
             it.release()
         }
 
-        // Crear un nuevo MediaPlayer y establecer la URL
-        mediaPlayer = MediaPlayer().apply {
-            setDataSource(song.fileUrl)
-            setOnPreparedListener {
-                it.start()
-                miniplayerPlayBtn.setImageResource(R.drawable.pause)
-                miniplayerSongBar.max = it.duration
-                handler.post(updateSeekBarRunnable) // Iniciar el Runnable para actualizar el SeekBar
+        // Descargar y reproducir el archivo de audio
+        firebaseManager.getAudio(song.fileUrl) { localPath ->
+            if (localPath != null) {
+                mediaPlayer = MediaPlayer().apply {
+                    setDataSource(localPath)
+                    setOnPreparedListener {
+                        it.start()
+                        miniplayerPlayBtn.setImageResource(R.drawable.pause)
+                        miniplayerSongBar.max = it.duration
+                        handler.post(updateSeekBarRunnable) // Iniciar el Runnable para actualizar el SeekBar
+                    }
+                    setOnCompletionListener {
+                        // Manejar la finalización de la canción aquí si es necesario
+                    }
+                    prepareAsync() // Preparar el MediaPlayer de forma asíncrona
+                }
+
+                currentSong = song
+
+                miniplayerSongTitleLabel.text = song.title
+                miniplayerSongArtistLabel.text = song.artists.joinToString(", ") { artist -> artist.name }
+                firebaseManager.loadImage(song.imageUrl, miniplayerSongImage){}
+
+                if (miniplayerContainer.visibility != View.VISIBLE) {
+                    songActive = true
+                    miniplayerContainer.visibility = View.VISIBLE
+                }
+            } else {
+                // Manejar el error en la descarga del archivo de audio
+                Toast.makeText(this, "Error al descargar la canción", Toast.LENGTH_SHORT).show()
             }
-            setOnCompletionListener {
-                // Manejar la finalización de la canción aquí si es necesario
-            }
-            prepareAsync() // Preparar el MediaPlayer de forma asíncrona
-        }
-
-        currentSong = song
-
-        miniplayerSongTitleLabel.text = song.title
-        miniplayerSongArtistLabel.text = song.artists.joinToString(", ") { artist -> artist.name }
-        Picasso.get()
-            .load(song.imageUrl)
-            .into(miniplayerSongImage)
-
-        if (miniplayerContainer.visibility != View.VISIBLE) {
-            songActive = true
-            miniplayerContainer.visibility = View.VISIBLE
         }
     }
 

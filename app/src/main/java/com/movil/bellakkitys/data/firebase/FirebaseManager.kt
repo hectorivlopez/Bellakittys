@@ -3,20 +3,24 @@ package com.movil.bellakkitys.data.firebase
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
-import android.widget.Toast
 import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.FileDownloadTask
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import com.movil.bellakkitys.data.auth.User
 import com.movil.bellakkitys.data.model.Artist
 import com.movil.bellakkitys.data.model.Song
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import java.io.File
+import java.io.IOException
 import java.util.UUID
+
 
 class FirebaseManager {
 
@@ -421,4 +425,24 @@ class FirebaseManager {
             // Uh-oh, an error occurred!
         }
     }
+
+    fun getAudio(audioUrl: String, callback: (String?) -> Unit) {
+        val storageRef = Firebase.storage.reference.child(audioUrl)
+
+        val localFile: File = try {
+            File.createTempFile("audio", "mp3")
+        } catch (e: IOException) {
+            e.printStackTrace()
+            callback(null)
+            return
+        }
+
+        storageRef.getFile(localFile).addOnSuccessListener {
+            callback(localFile.absolutePath)
+        }.addOnFailureListener { exception ->
+            exception.printStackTrace()
+            callback(null)
+        }
+    }
+
 }

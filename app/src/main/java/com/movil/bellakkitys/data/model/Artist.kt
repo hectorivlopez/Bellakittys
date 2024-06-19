@@ -8,21 +8,11 @@ import com.movil.bellakkitys.data.model.Song
 // Nombre del archivo: Artist.kt
 
 class Artist(
+    var id: String,
     var name: String,
     var imageUrl: String,
     var description: String,
 ) {
-    constructor(
-        id: String,
-        name: String,
-        imageUrl: String,
-        description: String,
-    ) : this(
-        name,
-        imageUrl,
-        description,
-    )
-
     companion object {
         val firebaseManager = FirebaseManager()
 
@@ -94,9 +84,31 @@ class Artist(
     }
 
     // Update
+    fun update() {
+        Artist.findById(this.id!!) { oldArtist ->
+            if(oldArtist != null) {
+                if(oldArtist.imageUrl != this.imageUrl) {
+                    // Delete old image
+                    firebaseManager.deleteImage(oldArtist.imageUrl)
+
+                    // Upload new image
+                    firebaseManager.uploadImage(this.imageUrl) { uri ->
+                        this.imageUrl = uri!!
+
+                        firebaseManager.updateArtist(this)
+                    }
+                }
+                else {
+                    firebaseManager.updateArtist(this)
+                }
+            }
+        }
+    }
 
     // Delete
-
+    fun delete() {
+        Song.firebaseManager.deleteArtist(this.id) {}
+    }
 
 }
 

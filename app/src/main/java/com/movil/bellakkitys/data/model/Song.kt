@@ -6,27 +6,13 @@ import com.movil.bellakkitys.data.firebase.FirebaseManager
 
 // Nombre del archivo: Song.kt
 class Song(
+    var id: String,
     var title: String,
     var artists: ArrayList<Artist>,
     var imageUrl: String,
     var duration: String,
     var fileUrl: String
 ) {
-    constructor (
-        id: String,
-        title: String,
-        artists: ArrayList<Artist>,
-        imageUrl: String,
-        duration: String,
-        fileUrl: String
-    ) : this(
-        title,
-        artists,
-        imageUrl,
-        duration,
-        fileUrl
-    )
-
     var active: Boolean = false
 
     companion object {
@@ -113,6 +99,29 @@ class Song(
     }
 
     // Update
+    fun update() {
+        Song.findById(this.id!!) { oldSong ->
+            if(oldSong != null) {
+                if(oldSong.imageUrl != this.imageUrl) {
+                    // Delete old image
+                    firebaseManager.deleteImage(oldSong.imageUrl)
+
+                    // Upload new image
+                    firebaseManager.uploadImage(this.imageUrl) { uri ->
+                        this.imageUrl = uri!!
+
+                        firebaseManager.updateSong(this)
+                    }
+                }
+                else {
+                    firebaseManager.updateSong(this)
+                }
+            }
+        }
+    }
 
     // Delete
+    fun delete() {
+        firebaseManager.deleteSong(this.id) {}
+    }
 }

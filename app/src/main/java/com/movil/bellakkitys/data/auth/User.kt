@@ -84,18 +84,21 @@ open class User(
         User.findById(this.id!!) { oldUser ->
             if(oldUser != null) {
                 if(oldUser.imageUrl != this.imageUrl) {
-                    // Delete old photo
+                    // Delete old image
+                    firebaseManager.deleteImage(oldUser.imageUrl!!)
 
+                    // Upload new image
                     firebaseManager.uploadImage(this.imageUrl!!) { uri ->
                         this.imageUrl = uri
 
                         firebaseManager.updateUser(this)
                     }
                 }
+                else {
+                    firebaseManager.updateUser(this)
+                }
             }
         }
-
-
     }
 
 }

@@ -27,7 +27,7 @@ class FirebaseManager {
     private val artists = db.collection("artists")
 
     private val storage = Firebase.storage
-    private val storageRef = storage.getReference()
+    private val storageRef = storage.reference
 
 
     // ------------------------------ Auth ------------------------------
@@ -134,21 +134,23 @@ class FirebaseManager {
     // ------------------------------ Queries ------------------------------
     // ---------- Create ----------
     fun createSong(song: Song) {
-        val uniqueID = UUID.randomUUID().toString()
-        val data = hashMapOf(
-            "title" to song.title,
-            "artists" to song.artists,
-            "imageUrl" to song.imageUrl,
-            "duration" to song.duration,
-            "fileUrl" to song.fileUrl,
-        )
-        songs.document(uniqueID).set(data)
-            .addOnSuccessListener { documentReference ->
-                Log.d("Create Song", "DocumentSnapshot added")
-            }
-            .addOnFailureListener { e ->
-                Log.w("Create Song", "Error adding document", e)
-            }
+        uploadImage(song.imageUrl) { uri ->
+            val uniqueID = UUID.randomUUID().toString()
+            val data = hashMapOf(
+                "title" to song.title,
+                "artists" to song.artists,
+                "imageUrl" to song.imageUrl,
+                "duration" to song.duration,
+                "fileUrl" to song.fileUrl,
+            )
+            songs.document(uniqueID).set(data)
+                .addOnSuccessListener { documentReference ->
+                    Log.d("Create Song", "DocumentSnapshot added")
+                }
+                .addOnFailureListener { e ->
+                    Log.w("Create Song", "Error adding document", e)
+                }
+        }
     }
 
     fun createArtist(artist: Artist) {
@@ -314,8 +316,63 @@ class FirebaseManager {
             }
     }
 
-    // ---------- Delete ----------
+    fun updateSong(song: Song) {
+        val songData = hashMapOf(
+            "title" to song.title,
+            "artists" to song.artists,
+            "imageUrl" to song.imageUrl,
+            "duration" to song.duration,
+            "fileUrl" to song.fileUrl
+        )
+        songs.document(song.id).set(songData)
+            .addOnSuccessListener { documentReference ->
+                Log.d("Update song", "DocumentSnapshot updated")
 
+            }
+            .addOnFailureListener { e ->
+                Log.w("Update song", "Error adding document", e)
+            }
+    }
+
+    fun updateArtist(artist: Artist) {
+        val artistData = hashMapOf(
+            "name" to artist.name,
+            "imageUrl" to artist.imageUrl,
+            "description" to artist.description,
+        )
+        artists.document(artist.id).set(artistData)
+            .addOnSuccessListener { documentReference ->
+                Log.d("Update artist", "DocumentSnapshot updated")
+
+            }
+            .addOnFailureListener { e ->
+                Log.w("Update artist", "Error adding document", e)
+            }
+    }
+
+    // ---------- Delete ----------
+    private fun delete(collection: CollectionReference, id: String, callback: () -> Unit) {
+        collection.document(id).delete()
+            .addOnSuccessListener {
+                Log.d("Delete document", "DocumentSnapshot successfully deleted!")
+                callback()
+            }
+            .addOnFailureListener {
+                e -> Log.w("Delete document", "Error deleting document", e)
+            }
+    }
+
+    fun deleteUser(id: String, callback: () -> Unit) {
+        delete(users, id) {callback()}
+    }
+
+    fun deleteSong(id: String, callback: () -> Unit) {
+        delete(songs, id) {callback()}
+    }
+
+    fun deleteArtist(id: String, callback: () -> Unit) {
+        delete(artists, id) {callback()}
+    }
     // ------------------------------ Upload files ------------------------------
 
     fun uploadImage(imageUri: String, callback: (String?) -> Unit) {
@@ -334,8 +391,6 @@ class FirebaseManager {
     }
 
     fun loadImage(imagePath: String, imageView: ImageView) {
-        val storage = Firebase.storage
-        val storageRef = storage.reference
         val imageRef = storageRef.child(imagePath)
 
         imageRef.downloadUrl.addOnSuccessListener { uri ->
@@ -346,4 +401,13 @@ class FirebaseManager {
         }
     }
 
+    fun deleteImage(imagePath: String) {
+        val imageRef = storageRef.child(imagePath)
+
+        imageRef.delete().addOnSuccessListener {
+            // File deleted successfully
+        }.addOnFailureListener {
+            // Uh-oh, an error occurred!
+        }
+    }
 }

@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.data.firebase.FirebaseManager
 import com.movil.bellakkitys.data.model.Artist
@@ -64,19 +66,23 @@ class ArtistAdapter(private var artists: List<Artist>) : RecyclerView.Adapter<Ar
     inner class ArtistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val artistName: TextView = itemView.findViewById(R.id.artistName)
         private val artistImage: ImageView = itemView.findViewById(R.id.artistImage)
+        private val artistImageContainer: CardView = itemView.findViewById(R.id.artistImageContainer)
 
         init {
             // New code: Set click listener for the item view
             itemView.setOnClickListener {
                 listener?.onItemClick(adapterPosition, artists[adapterPosition])
             }
+            itemView.isVisible = false
         }
 
         val firebaseManager = FirebaseManager()
 
         fun bind(artist: Artist) {
             artistName.text = artist.name
-            firebaseManager.loadImage(artist.imageUrl,artistImage){}
+            firebaseManager.loadImage(artist.imageUrl,artistImage){
+                itemView.isVisible = true
+            }
             // Load song thumbnail/image using a library like Picasso/Glide
             // Example: Glide.with(itemView.context).load(song.thumbnailUrl).into(artistImage)
         }

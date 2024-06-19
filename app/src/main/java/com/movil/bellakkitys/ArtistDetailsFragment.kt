@@ -62,12 +62,12 @@ class ArtistDetailsFragment : Fragment() {
         artistDetailsDescriptionLabel.text = artistsViewModel.artistDescription
 
         // ------------------------------ Validate user type------------------------------
-        val rol = artistsViewModel.rol
-
-        if(rol == "user") {
-            val parentLayout = binding.fragmentArtistDetails
-            parentLayout.removeView(artistModifyBtn)
-            parentLayout.removeView(artistDeleteBtn)
+        firebaseManager.getCurrentUser { user ->
+            if (user?.rol == "user") {
+                val parentLayout = binding.fragmentArtistDetails
+                parentLayout.removeView(artistModifyBtn)
+                parentLayout.removeView(artistDeleteBtn)
+            }
         }
 
         // ------------------------------ Songs List------------------------------

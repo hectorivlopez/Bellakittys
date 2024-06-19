@@ -32,6 +32,7 @@ class ArtistsFragment : Fragment() {
     private lateinit var artistsSearchBar: EditText
     private lateinit var artistsRecyclerView: RecyclerView
     private lateinit var artistAdapter: ArtistAdapter
+    private var isListenerActive = true
 
     // Firebase
     private val firebaseManager = FirebaseManager()
@@ -101,19 +102,29 @@ class ArtistsFragment : Fragment() {
 
             artistAdapter.setOnItemClickListener(object : ArtistAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int, artist: Artist) {
-                    //(activity as? MainActivity)?.playSong(artist)
-                    artistsViewModel.artistImageUrl = artist.imageUrl
-                    artistsViewModel.artistName = artist.name
-                    artistsViewModel.artistDescription = artist.description
-                    Toast.makeText(requireContext(), artist.imageUrl.toString(), Toast.LENGTH_SHORT).show()
+                    if (isListenerActive) {
+                        // Actualiza los valores en el ViewModel
+                        artistsViewModel.artistImageUrl = artist.imageUrl
+                        artistsViewModel.artistName = artist.name
+                        artistsViewModel.artistDescription = artist.description
 
-                    val mainActivity = activity as MainActivity?
-                    mainActivity?.replaceFragment(ArtistDetailsFragment())
+                        // Desactiva el listener
+                        isListenerActive = false
+
+                        // Reemplaza el fragmento actual con ArtistDetailsFragment
+                        val mainActivity = activity as MainActivity?
+                        mainActivity?.replaceFragment(ArtistDetailsFragment())
+                    }
                 }
             })
         }
 
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isListenerActive = true
     }
 
     override fun onDestroyView() {

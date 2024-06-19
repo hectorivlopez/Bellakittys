@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,8 +57,11 @@ class ArtistDetailsFragment : Fragment() {
         artistDetailsImage = binding.artistDetailsImage
         artistDetailsNameLabel = binding.artistDetailsNameLabel
         artistDetailsDescriptionLabel = binding.artistDetailsDescriptionLabel
+        artistDetailsImage.isVisible = false
 
-        firebaseManager.loadImage(artistsViewModel.artistImageUrl, artistDetailsImage){}
+        firebaseManager.loadImage(artistsViewModel.artistImageUrl, artistDetailsImage){
+            artistDetailsImage.isVisible = true
+        }
         artistDetailsNameLabel.text = artistsViewModel.artistName
         artistDetailsDescriptionLabel.text = artistsViewModel.artistDescription
 

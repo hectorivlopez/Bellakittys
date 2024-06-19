@@ -148,7 +148,7 @@ class FirebaseManager {
             "description" to artist.description,
             "concert" to artist.concert,
         )
-        songs.document(uniqueID).set(data)
+        artists.document(uniqueID).set(data)
             .addOnSuccessListener { documentReference ->
                 Log.d("Create Artist", "DocumentSnapshot added")
             }

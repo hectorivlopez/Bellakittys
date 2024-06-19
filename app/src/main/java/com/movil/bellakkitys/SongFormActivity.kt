@@ -177,7 +177,7 @@ class SongFormActivity : AppCompatActivity() {
     }
 
     fun add() {
-        if (titleTxt.text.isBlank() || artistTxt.text.isBlank() || durationTxt.text.isBlank()) {
+        if (titleTxt.text.isBlank() || durationTxt.text.isBlank()) {
             Toast.makeText(this, "Llene todos los campos", Toast.LENGTH_SHORT).show()
         } else {
             val songArtists = mutableListOf<Artist>()
@@ -197,7 +197,7 @@ class SongFormActivity : AppCompatActivity() {
                 selectedAudioUri.toString()
             )
 
-            /*song.add()*/
+            song.add()
 
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

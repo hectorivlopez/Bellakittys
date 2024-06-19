@@ -10,10 +10,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.data.model.Song
 
-class SongAdapter(private var songs: List<Song>, private val rol: String) : RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
+class SongAdapter(private var songs: List<Song>, private val rol: String) :
+    RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.songs_list_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.songs_list_item, parent, false)
         return SongViewHolder(view)
     }
 
@@ -24,7 +26,8 @@ class SongAdapter(private var songs: List<Song>, private val rol: String) : Recy
         // Margin bottom to the last element
         if (position == itemCount - 1) {
             val layoutParams = holder.itemView.layoutParams as RecyclerView.LayoutParams
-            val marginBottom = holder.itemView.context.resources.getDimensionPixelSize(R.dimen.last_item_margin_bottom)
+            val marginBottom =
+                holder.itemView.context.resources.getDimensionPixelSize(R.dimen.last_item_margin_bottom)
             layoutParams.setMargins(
                 layoutParams.leftMargin,
                 layoutParams.topMargin,
@@ -59,7 +62,6 @@ class SongAdapter(private var songs: List<Song>, private val rol: String) : Recy
     }
 
 
-
     override fun getItemCount(): Int {
         return songs.size
     }
@@ -86,13 +88,21 @@ class SongAdapter(private var songs: List<Song>, private val rol: String) : Recy
 
         fun bind(song: Song, rol: String) {
             songTitle.text = song.title
-            songArtist.text = song.artists.toString()
-            if (song.imageUrl.isNotEmpty()) {
-                Song.firebaseManager.loadImage(song.imageUrl, songThumbnail){}
+            var artistsStr = ""
+            for(artist in song.artists) {
+                artistsStr += artist.name + ", "
             }
+            songArtist.text = artistsStr
+            Song.firebaseManager.loadImage(song.imageUrl, songThumbnail) {}
+
             songDuration.text = song.duration
             if (song.active) {
-                songTitle.setTextColor(ContextCompat.getColor(itemView.context, R.color.accentColor))
+                songTitle.setTextColor(
+                    ContextCompat.getColor(
+                        itemView.context,
+                        R.color.accentColor
+                    )
+                )
             } else {
                 // Set default color if not active
                 songTitle.setTextColor(ContextCompat.getColor(itemView.context, R.color.white))
@@ -100,13 +110,13 @@ class SongAdapter(private var songs: List<Song>, private val rol: String) : Recy
             // Load song thumbnail/image using a library like Picasso/Glide
             // Example: Glide.with(itemView.context).load(song.thumbnailUrl).into(songThumbnail)
             // Show/hide elements based on the user role
-            if (rol == "user") {
+            /*if (rol == "user") {
                 editSongBtn.visibility = View.GONE
                 songDuration.visibility = View.VISIBLE
             } else if (rol == "admin") {
                 editSongBtn.visibility = View.VISIBLE
                 songDuration.visibility = View.GONE
-            }
+            }*/
         }
     }
 

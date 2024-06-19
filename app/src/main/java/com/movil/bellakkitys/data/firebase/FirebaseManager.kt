@@ -139,23 +139,26 @@ class FirebaseManager {
     // ------------------------------ Queries ------------------------------
     // ---------- Create ----------
     fun createSong(song: Song) {
-        uploadImage(song.imageUrl) { uri ->
-            val uniqueID = UUID.randomUUID().toString()
-            val data = hashMapOf(
-                "title" to song.title,
-                "artists" to song.artists,
-                "imageUrl" to song.imageUrl,
-                "duration" to song.duration,
-                "fileUrl" to song.fileUrl,
-            )
-            songs.document(uniqueID).set(data)
-                .addOnSuccessListener { documentReference ->
-                    Log.d("Create Song", "DocumentSnapshot added")
-                }
-                .addOnFailureListener { e ->
-                    Log.w("Create Song", "Error adding document", e)
-                }
+        uploadAudio(song.fileUrl) {audioUri ->
+            uploadImage(song.imageUrl) { imageUri ->
+                val uniqueID = UUID.randomUUID().toString()
+                val data = hashMapOf(
+                    "title" to song.title,
+                    "artists" to song.artists,
+                    "imageUrl" to imageUri,
+                    "duration" to song.duration,
+                    "fileUrl" to audioUri,
+                )
+                songs.document(uniqueID).set(data)
+                    .addOnSuccessListener { documentReference ->
+                        Log.d("Create Song", "DocumentSnapshot added")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("Create Song", "Error adding document", e)
+                    }
+            }
         }
+
     }
 
     fun createArtist(artist: Artist) {
@@ -424,6 +427,22 @@ class FirebaseManager {
         }.addOnFailureListener {
             // Uh-oh, an error occurred!
         }
+    }
+
+
+    fun uploadAudio(audioUri: String, callback: (String?) -> Unit) {
+        val fileUri = Uri.parse(audioUri)
+
+        val uniqueID = UUID.randomUUID().toString()
+        val fileRef = storageRef.child("songs/$uniqueID.mp3")
+
+        fileRef.putFile(fileUri)
+            .addOnSuccessListener {
+                callback("songs/$uniqueID.mp3")
+            }
+            .addOnFailureListener { exception ->
+                callback(null)
+            }
     }
 
     fun getAudio(audioUrl: String, callback: (String?) -> Unit) {

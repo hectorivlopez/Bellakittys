@@ -26,6 +26,7 @@ import com.movil.bellakkitys.ui.artists.ArtistsViewModel
 import com.movil.bellakkitys.ui.concerts.ConcertsViewModel
 import com.movil.bellakkitys.data.model.Song
 import com.movil.bellakkitys.ui.songs.SongsViewModel
+import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
     private val sharedPreferencesManager by lazy { SharedPreferencesManager(this) }
@@ -206,18 +207,19 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
             miniplayerContainer.visibility = View.VISIBLE
         }
 
-        /*miniplayer.setOnClickListener{
+        miniplayer.setOnClickListener{
             val intent = Intent(this, PlayerActivity::class.java)
             intent.putExtra("songTitle", currentSong?.title)
-            intent.putExtra("songArtist", currentSong?.artist)
-            currentSong?.let { it1 -> intent.putExtra("songImage", it1.image) }
+            val artistNames = currentSong?.artists?.joinToString(", ") { artist -> artist.name }
+            intent.putExtra("songArtist", artistNames)
+            currentSong?.let { it1 -> intent.putExtra("songImage", it1.imageUrl) }
             intent.putExtra("progress", miniplayerSongBar.progress)
             startActivity(intent)
-        }*/
+        }
 
-        /*miniplayerPlayBtn.setOnClickListener{
+        miniplayerPlayBtn.setOnClickListener{
             playPauseSong()
-        }*/
+        }
 
         // ------------------------------ SongBar------------------------------
         miniplayerSongBar = findViewById(R.id.coco)
@@ -277,34 +279,46 @@ class MainActivity : AppCompatActivity(), MediaPlayerPreparedListener {
 
     // ------------------------------ Functions------------------------------
     fun playSong(song: Song, songTitle: TextView) {
-        /*currentSong?.active = false
+        currentSong?.active = false
         song.active = true
         currentSongTitle?.setTextColor(ContextCompat.getColor(this, R.color.white))
         songTitle.setTextColor(ContextCompat.getColor(this, R.color.accentColor))
         currentSongTitle = songTitle
 
-        MediaPlayerSingleton.stop()
-        mediaPlayer?.reset()
+        // Detener y liberar el MediaPlayer actual
+        mediaPlayer?.let {
+            it.stop()
+            it.reset()
+            it.release()
+        }
 
-        MediaPlayerSingleton.play(applicationContext, song.file, this)
-        // wait
-        //miniplayerSongBar.max = mediaPlayer!!.duration
-
-       // handler.post(updateSeekBarRunnable)
-
+        // Crear un nuevo MediaPlayer y establecer la URL
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(song.fileUrl)
+            setOnPreparedListener {
+                it.start()
+                miniplayerPlayBtn.setImageResource(R.drawable.pause)
+                miniplayerSongBar.max = it.duration
+                handler.post(updateSeekBarRunnable) // Iniciar el Runnable para actualizar el SeekBar
+            }
+            setOnCompletionListener {
+                // Manejar la finalización de la canción aquí si es necesario
+            }
+            prepareAsync() // Preparar el MediaPlayer de forma asíncrona
+        }
 
         currentSong = song
-        miniplayerPlayBtn.setImageResource(R.drawable.pause)
 
         miniplayerSongTitleLabel.text = song.title
-        miniplayerSongArtistLabel.text = song.artist
-        miniplayerSongImage.setImageResource(song.image)
+        miniplayerSongArtistLabel.text = song.artists.joinToString(", ") { artist -> artist.name }
+        Picasso.get()
+            .load(song.imageUrl)
+            .into(miniplayerSongImage)
 
-        if(miniplayerContainer.visibility != View.VISIBLE) {
+        if (miniplayerContainer.visibility != View.VISIBLE) {
             songActive = true
             miniplayerContainer.visibility = View.VISIBLE
         }
-*/
     }
 
     fun playPauseSong() {

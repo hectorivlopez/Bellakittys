@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 
 class PlayerActivity : AppCompatActivity() {
     // MediaPlayer
@@ -32,7 +33,7 @@ class PlayerActivity : AppCompatActivity() {
         // ------------------------------ Get extras------------------------------
         var extras = intent.extras
 
-        val songImage = extras?.getInt("songImage")
+        val songImage = extras?.getString("songImage")
         val songTitle = extras?.getString("songTitle")
         val songArtist = extras?.getString("songArtist")
         val songFile = extras?.getInt("songFile")
@@ -83,7 +84,9 @@ class PlayerActivity : AppCompatActivity() {
         // ------------------------------ Elements data------------------------------
         playerSongImage = findViewById(R.id.playerSongImage)
         if (songImage != null) {
-            playerSongImage.setImageResource(songImage)
+            Picasso.get()
+                .load(songImage)
+                .into(playerSongImage)
         }
 
         playerSongTitleLabel = findViewById(R.id.playerSongTitleLabel)

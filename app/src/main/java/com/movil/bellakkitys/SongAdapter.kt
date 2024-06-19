@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.movil.bellakkitys.data.model.Song
+import com.squareup.picasso.Picasso
 
 class SongAdapter(private var songs: ArrayList<Song>) : RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
 
@@ -84,8 +85,10 @@ class SongAdapter(private var songs: ArrayList<Song>) : RecyclerView.Adapter<Son
 
         fun bind(song: Song) {
             songTitle.text = song.title
-            /*songArtist.text = song.artist
-            songThumbnail.setImageResource(song.image)*/
+            songArtist.text = song.artists.toString()
+            Picasso.get()
+                .load(song.imageUrl)
+                .into(songThumbnail)
             songDuration.text = song.duration
             if (song.active) {
                 songTitle.setTextColor(ContextCompat.getColor(itemView.context, R.color.accentColor))

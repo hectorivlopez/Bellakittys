@@ -60,6 +60,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     // Firestore
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-firestore-ktx:25.0.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -72,4 +73,8 @@ dependencies {
     implementation("androidx.camera:camera-video:1.4.0-alpha04")
     implementation("androidx.camera:camera-view:1.4.0-alpha04")
     implementation("androidx.camera:camera-extensions:1.4.0-alpha04")
+
+    // Image dependencies
+    implementation ("com.squareup.picasso:picasso:2.71828")
+
 }
